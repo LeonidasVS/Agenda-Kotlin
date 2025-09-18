@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">CRUD-Kotlin</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+    <string name="bienvenido">¡Organiza tu dia con StudyPlanner!</string>
+    <string name="descripcion">Una agenda estudiantil diseñada para ayudarte a organizar tareas, clases y exámenes de manera sencilla.</string>
+    <string name="login_descripcion">Inicia sesion para llevar el control de tus materias, tareas o examenes desde una sola app ¡Estudiar nunca fue tan fácil!”</string>
+    <string name="nombreusuario">Juan Leonidas Villafranco Sibrian</string>
+    <string name="correoElectronico">ejemplo@gmail.com</string>
+</resources>
