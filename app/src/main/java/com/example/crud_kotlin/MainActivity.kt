@@ -24,7 +24,7 @@ class MainActivity : AppCompatActivity() {
             insets
         }
 
-        binding.btnIniciar.setOnClickListener {
+        binding.btnLogin.setOnClickListener {
             startActivity(Intent(applicationContext,LoginActivity::class.java))
         }
 
@@ -32,5 +32,12 @@ class MainActivity : AppCompatActivity() {
             startActivity(Intent(applicationContext,RegistrarActivity::class.java))
         }
 
+        binding.btnDashboard.setOnClickListener {
+            startActivity(Intent(applicationContext,DashboardActivity::class.java))
+        }
+
+        binding.btnPerfil.setOnClickListener {
+            startActivity(Intent(applicationContext,PerfilActivity::class.java))
+        }
     }
 }

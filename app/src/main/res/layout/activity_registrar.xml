@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.appcompat.widget.LinearLayoutCompat
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -9,13 +9,14 @@
     android:background="@color/blanco"
     tools:context=".RegistrarActivity">
 
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
         <TextView
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="40dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Crear Una Cuenta"
@@ -29,7 +30,7 @@
         <ImageView
             android:id="@+id/imgProfile"
             android:layout_width="wrap_content"
-            android:layout_height="140dp"
+            android:layout_height="160dp"
             android:layout_gravity="center"
             android:layout_marginBottom="12dp"
             android:src="@drawable/img_agregar" />
@@ -41,10 +42,22 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/inputNombre"
                 style="@style/EstiloInput"
-                android:hint="Nombre"
+                android:hint="Nombres"
                 android:drawableStart="@drawable/ic_nombre" />
         </com.google.android.material.textfield.TextInputLayout>
 
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/inputApellido"
+                style="@style/EstiloInput"
+                android:hint="Apellidos"
+                android:drawableStart="@drawable/ic_apellido" />
+        </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_marginTop="8dp"
@@ -59,18 +72,6 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp">
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/inputDireccion"
-                style="@style/EstiloInput"
-                android:hint="Direccion"
-                android:drawableStart="@drawable/ic_direccion" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-
-        <com.google.android.material.textfield.TextInputLayout
             android:layout_marginTop="8dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -82,31 +83,28 @@
                 android:drawableStart="@drawable/ic_contrasena"/>
         </com.google.android.material.textfield.TextInputLayout>
 
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/inputCarrera"
+                style="@style/EstiloInput"
+                android:hint="Carrera"
+                android:drawableStart="@drawable/ic_carrera" />
+        </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp">
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/inpuTelefono"
-                android:hint="Telefono"
+                android:id="@+id/inputCiclo"
+                style="@style/EstiloInput"
                 android:inputType="number"
-                style="@style/EstiloInput"
-                android:drawableStart="@drawable/ic_telefono"/>
+                android:hint="Ciclo"
+                android:drawableStart="@drawable/ic_ciclo" />
         </com.google.android.material.textfield.TextInputLayout>
-
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_marginTop="8dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etHobby"
-                style="@style/EstiloInput"
-                android:hint="Hobby"
-                android:drawableStart="@drawable/ic_hobby"/>
-        </com.google.android.material.textfield.TextInputLayout>
-
         <com.google.android.material.button.MaterialButton
             android:layout_marginTop="30dp"
             android:layout_width="match_parent"
@@ -114,11 +112,12 @@
             android:layout_marginLeft="50dp"
             app:cornerRadius="8dp"
             android:fontFamily="@font/poppins_medium"
-            android:textSize="16sp"
+            android:textSize="14sp"
             android:text="Registrarme"
+            android:textColor="@color/blanco"
             android:backgroundTint="@color/azul"
             android:layout_height="wrap_content"/>
 
     </LinearLayout>
 
-</androidx.appcompat.widget.LinearLayoutCompat>
+</ScrollView>

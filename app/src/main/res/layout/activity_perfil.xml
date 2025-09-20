@@ -54,9 +54,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
-            android:drawableStart="@drawable/ic_telefono"
+            android:drawableStart="@drawable/ic_carrera"
             android:drawablePadding="15dp"
-            android:text="75032914"
+            android:text="Ingeneria en sistemas"
             android:textColor="@color/grisAzulado"
             android:textSize="16sp"
             android:textStyle="italic" />

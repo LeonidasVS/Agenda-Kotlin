@@ -12,6 +12,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CRUDKotlin">
         <activity
+            android:name=".DashboardActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Dashboard"
+            android:exported="false" />
+        <activity
             android:name=".PerfilActivity"
             android:exported="false" />
         <activity android:name=".ActualizarActivity" />
