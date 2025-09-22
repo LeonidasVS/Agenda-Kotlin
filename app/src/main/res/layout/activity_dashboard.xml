@@ -37,18 +37,20 @@
 
     </RelativeLayout>
 
-    <ScrollView
+    <FrameLayout
+        android:id="@+id/fragmentoFL"
+        android:layout_above="@+id/bottomNV"
+        android:layout_below="@+id/toolbarRL"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"/>
 
-    </ScrollView>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNV"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="-24dp"
+        android:layout_marginBottom="-34dp"
         app:labelVisibilityMode="labeled"
         app:menu="@menu/opciones_menu" />
 
