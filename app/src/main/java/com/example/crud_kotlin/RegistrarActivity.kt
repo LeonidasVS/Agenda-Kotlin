@@ -17,7 +17,10 @@ import com.google.firebase.database.FirebaseDatabase
 
 class RegistrarActivity : AppCompatActivity() {
 
+    // Variable para inicializar el binding
     private lateinit var binding: ActivityRegistrarBinding
+
+    //Variable para iniciar FirebaseAuth
     private lateinit var auth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,6 +39,7 @@ class RegistrarActivity : AppCompatActivity() {
             insets
         }
 
+        // Apuntnado a cada ID del layout activity_registrar
         val etNombre = findViewById<EditText>(R.id.inputNombre)
         val etApellido = findViewById<EditText>(R.id.inputApellido)
         val etCorreo = findViewById<EditText>(R.id.inputMail)
@@ -43,6 +47,7 @@ class RegistrarActivity : AppCompatActivity() {
         val etCarrera = findViewById<EditText>(R.id.inputCarrera)
         val etCiclo = findViewById<EditText>(R.id.inputCiclo)
 
+        // Metodo del boton
         binding.botonRegistrar.setOnClickListener {
 
             val nombre=etNombre.text.toString().trim()
@@ -52,11 +57,14 @@ class RegistrarActivity : AppCompatActivity() {
             val ciclo=etCiclo.text.toString().trim()
             val contra=etPassword.text.toString().trim()
 
+            //Validando campos
             if(nombre.isEmpty() || apellido.isEmpty() || correo.isEmpty() || carrera.isEmpty() || ciclo.isEmpty()){
                 Toast.makeText(this, "¡Completa los campos vacios!", Toast.LENGTH_LONG).show()
             }else if(contra.length<6){
                 Toast.makeText(this, "¡La contraseña debe tener mas de 6 digitos!", Toast.LENGTH_LONG).show()
             }else{
+
+                // Creando usuario en FireBase
                 auth.createUserWithEmailAndPassword(correo, contra)
                     .addOnCompleteListener { task ->
                         if (task.isSuccessful) {
@@ -69,9 +77,9 @@ class RegistrarActivity : AppCompatActivity() {
                             val dbRef = FirebaseDatabase.getInstance().getReference("users")
                             dbRef.child(uid).setValue(user)
                                 .addOnSuccessListener {
-                                    firebaseUser.sendEmailVerification() // opcional
                                     Toast.makeText(this, "Registro exitoso.", Toast.LENGTH_LONG).show()
 
+                                    //Limpiar los campos
                                     etNombre.setText("")
                                     etApellido.setText("")
                                     etCorreo.setText("")

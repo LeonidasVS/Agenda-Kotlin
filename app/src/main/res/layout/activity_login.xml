@@ -1,47 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
+<androidx.appcompat.widget.LinearLayoutCompat
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:background="@color/blanco"
+    android:gravity="center"
     tools:context=".LoginActivity">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:gravity="center_horizontal">
-
         <ImageView
-            android:src="@drawable/img_login"
             android:layout_width="match_parent"
-            android:layout_height="280dp"
-            android:layout_marginTop="30dp"/>
+            android:layout_height="150dp"
+            android:layout_marginTop="-50dp"
+            android:src="@drawable/img_login" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Inicio De Sesion"
             android:fontFamily="@font/poppins_medium"
+            android:text="Inicio De Sesion"
             android:textAlignment="center"
-            android:textStyle="bold"
-            android:textSize="28sp"
-            android:textColor="@color/azul"/>
+            android:textColor="@color/azul"
+            android:textSize="23sp"
+            android:textStyle="bold" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/poppins_light"
-            android:layout_marginRight="20dp"
             android:layout_marginLeft="20dp"
             android:layout_marginTop="20dp"
+            android:layout_marginRight="20dp"
+            android:fontFamily="@font/poppins_light"
+            android:text="@string/login_descripcion"
             android:textAlignment="center"
-            android:textSize="18sp"
             android:textColor="@color/black"
-            android:text="@string/login_descripcion"/>
+            android:textSize="15sp" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
@@ -51,39 +47,38 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/inputCorreo"
                 style="@style/EstiloInput"
-                android:hint="Correo Electrónico"
-                android:inputType="textEmailAddress"
                 android:drawableStart="@drawable/ic_mail"
-                android:drawablePadding="12dp"/>
+                android:drawablePadding="12dp"
+                android:hint="Correo Electrónico"
+                android:inputType="textEmailAddress" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp">
+            android:layout_marginTop="20dp"
+            app:passwordToggleEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/inputPassword"
                 style="@style/EstiloInput"
-                android:hint="Contraseña"
-                android:inputType="textPassword"
                 android:drawableStart="@drawable/ic_contrasena"
-                android:drawablePadding="12dp"/>
+                android:drawablePadding="12dp"
+                android:hint="Contraseña"
+                android:inputType="textPassword" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnLogearse"
+            android:id="@+id/btnLogin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Verificar"
-            android:textSize="14sp"
-            android:fontFamily="@font/poppins_medium"
-            android:layout_marginRight="40dp"
             android:layout_marginLeft="40dp"
             android:layout_marginTop="30dp"
-            android:textColor="@color/blanco"
+            android:layout_marginRight="40dp"
             android:backgroundTint="@color/azul"
-            app:cornerRadius="8dp"/>
-
-    </LinearLayout>
-</ScrollView>
+            android:fontFamily="@font/poppins_medium"
+            android:text="Verificar"
+            android:textColor="@color/blanco"
+            android:textSize="12sp"
+            app:cornerRadius="8dp" />
+</androidx.appcompat.widget.LinearLayoutCompat>
