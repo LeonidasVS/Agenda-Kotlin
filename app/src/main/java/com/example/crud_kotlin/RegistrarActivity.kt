@@ -1,20 +1,94 @@
 package com.example.crud_kotlin
 
 import android.os.Bundle
+import android.widget.Button
+import android.widget.EditText
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.example.crud_kotlin.Modelos.Registro
+import com.example.crud_kotlin.databinding.ActivityDashboardBinding
+import com.example.crud_kotlin.databinding.ActivityRegistrarBinding
+import com.google.firebase.Firebase
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.FirebaseDatabase
 
 class RegistrarActivity : AppCompatActivity() {
+
+    private lateinit var binding: ActivityRegistrarBinding
+    private lateinit var auth: FirebaseAuth
+
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
+
+        binding = ActivityRegistrarBinding.inflate(layoutInflater)
+
+        auth = FirebaseAuth.getInstance()
         enableEdgeToEdge()
-        setContentView(R.layout.activity_registrar)
+        setContentView(binding.root)
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
+        }
+
+        val etNombre = findViewById<EditText>(R.id.inputNombre)
+        val etApellido = findViewById<EditText>(R.id.inputApellido)
+        val etCorreo = findViewById<EditText>(R.id.inputMail)
+        val etPassword = findViewById<EditText>(R.id.inputPass)
+        val etCarrera = findViewById<EditText>(R.id.inputCarrera)
+        val etCiclo = findViewById<EditText>(R.id.inputCiclo)
+
+        binding.botonRegistrar.setOnClickListener {
+
+            val nombre=etNombre.text.toString().trim()
+            val apellido=etApellido.text.toString().trim()
+            val correo=etCorreo.text.toString().trim()
+            val carrera=etCarrera.text.toString().trim()
+            val ciclo=etCiclo.text.toString().trim()
+            val contra=etPassword.text.toString().trim()
+
+            if(nombre.isEmpty() || apellido.isEmpty() || correo.isEmpty() || carrera.isEmpty() || ciclo.isEmpty()){
+                Toast.makeText(this, "¡Completa los campos vacios!", Toast.LENGTH_LONG).show()
+            }else if(contra.length<6){
+                Toast.makeText(this, "¡La contraseña debe tener mas de 6 digitos!", Toast.LENGTH_LONG).show()
+            }else{
+                auth.createUserWithEmailAndPassword(correo, contra)
+                    .addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
+                            val firebaseUser = auth.currentUser
+                            val uid = firebaseUser?.uid ?: return@addOnCompleteListener
+
+                            val user = Registro(nombre, apellido, correo, carrera, ciclo)
+
+                            // Guardar en Realtime Database
+                            val dbRef = FirebaseDatabase.getInstance().getReference("users")
+                            dbRef.child(uid).setValue(user)
+                                .addOnSuccessListener {
+                                    firebaseUser.sendEmailVerification() // opcional
+                                    Toast.makeText(this, "Registro exitoso.", Toast.LENGTH_LONG).show()
+
+                                    etNombre.setText("")
+                                    etApellido.setText("")
+                                    etCorreo.setText("")
+                                    etPassword.setText("")
+                                    etCarrera.setText("")
+                                    etCiclo.setText("")
+                                }
+                                .addOnFailureListener { e ->
+                                    Toast.makeText(this, "Error guardando: ${e.message}", Toast.LENGTH_LONG).show()
+                                }
+
+                        } else {
+                            val error = task.exception?.message ?: "Error al registrar"
+                            Toast.makeText(this, error, Toast.LENGTH_LONG).show()
+                        }
+                    }
+            }
         }
     }
 }

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
+    <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
         android:allowBackup="true"
@@ -15,13 +16,9 @@
             android:name=".DashboardActivity"
             android:exported="false" />
         <activity
-            android:name=".Dashboard"
-            android:exported="false" />
-        <activity
             android:name=".PerfilActivity"
             android:exported="false" />
         <activity android:name=".ActualizarActivity" />
-        <activity android:name=".ListaUsuarioActivity" />
         <activity android:name=".RegistrarActivity" />
         <activity android:name=".LoginActivity" />
         <activity

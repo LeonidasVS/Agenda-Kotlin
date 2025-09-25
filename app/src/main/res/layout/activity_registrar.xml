@@ -41,6 +41,7 @@
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/inputNombre"
+                android:inputType="textPersonName"
                 style="@style/EstiloInput"
                 android:hint="Nombres"
                 android:drawableStart="@drawable/ic_nombre" />
@@ -76,7 +77,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etPassword"
+                android:id="@+id/inputPass"
                 style="@style/EstiloInput"
                 android:hint="Contraseña (mín 6)"
                 android:inputType="textPassword"
@@ -105,7 +106,9 @@
                 android:hint="Ciclo"
                 android:drawableStart="@drawable/ic_ciclo" />
         </com.google.android.material.textfield.TextInputLayout>
+
         <com.google.android.material.button.MaterialButton
+            android:id="@+id/botonRegistrar"
             android:layout_marginTop="30dp"
             android:layout_width="match_parent"
             android:layout_marginRight="50dp"
