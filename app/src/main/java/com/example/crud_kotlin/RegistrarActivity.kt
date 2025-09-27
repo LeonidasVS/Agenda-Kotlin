@@ -1,5 +1,6 @@
 package com.example.crud_kotlin
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.ArrayAdapter
@@ -83,60 +84,86 @@ class RegistrarActivity : AppCompatActivity() {
         // Metodo del boton
         binding.botonRegistrar.setOnClickListener {
 
-            val nombre=etNombre.text.toString().trim()
-            val apellido=etApellido.text.toString().trim()
-            val correo=etCorreo.text.toString().trim()
-            val carrera=etCarrera.selectedItem.toString().trim()
+            val nombre = etNombre.text.toString().trim()
+            val apellido = etApellido.text.toString().trim()
+            val correo = etCorreo.text.toString().trim()
+            val carrera = etCarrera.selectedItem.toString().trim()
+            val contra = etPassword.text.toString().trim()
 
-            val contra=etPassword.text.toString().trim()
+            if (nombre.isEmpty() || apellido.isEmpty() || correo.isEmpty() || carrera.isEmpty()) {
+                Toast.makeText(this, "¡Completa los campos vacíos!", Toast.LENGTH_LONG).show()
+                return@setOnClickListener
+            }
+
             val user = FirebaseAuth.getInstance().currentUser
+            val isGoogleUser = user?.providerData?.any { it.providerId == "google.com" } ?: false
 
+            if (isGoogleUser) {
+                // ✅ Usuario Google → NO usar createUserWithEmailAndPassword
+                val uid = user?.uid ?: return@setOnClickListener
+                val newUser = Registro(nombre, apellido, correo, carrera)
 
+                FirebaseDatabase.getInstance().getReference("users")
+                    .child(uid)
+                    .setValue(newUser)
+                    .addOnSuccessListener {
+                        Toast.makeText(this, "Registro completado con Google.", Toast.LENGTH_LONG)
+                            .show()
 
-            //Validando campos
-            if(nombre.isEmpty() || apellido.isEmpty() || correo.isEmpty() || carrera.isEmpty()){
-                Toast.makeText(this, "¡Completa los campos vacios!", Toast.LENGTH_LONG).show()
-            }else if(contra.length<6){
-                Toast.makeText(this, "¡La contraseña debe tener mas de 6 digitos!", Toast.LENGTH_LONG).show()
-            }else{
+                        startActivity(Intent(this, DashboardActivity::class.java))
+                        enableInputFields()
+                        finish()
 
-                // Creando usuario en FireBase
+                    }
+                    .addOnFailureListener { e ->
+                        Toast.makeText(this, "Error guardando: ${e.message}", Toast.LENGTH_LONG)
+                            .show()
+                    }
+
+            } else {
+                // ✅ Usuario Email/Password → registrar normalmente
+                if (contra.length < 6) {
+                    Toast.makeText(
+                        this,
+                        "¡La contraseña debe tener más de 6 dígitos!",
+                        Toast.LENGTH_LONG
+                    ).show()
+                    return@setOnClickListener
+                }
+
                 auth.createUserWithEmailAndPassword(correo, contra)
                     .addOnCompleteListener { task ->
                         if (task.isSuccessful) {
-                            val firebaseUser = auth.currentUser
-                            val uid = firebaseUser?.uid ?: return@addOnCompleteListener
+                            val uid = auth.currentUser?.uid ?: return@addOnCompleteListener
+                            val userDB = Registro(nombre, apellido, correo, carrera)
 
-                            val user = Registro(nombre, apellido, correo, carrera)
-
-                            // Guardar en Realtime Database
-                            val dbRef = FirebaseDatabase.getInstance().getReference("users")
-                            dbRef.child(uid).setValue(user)
+                            FirebaseDatabase.getInstance().getReference("users")
+                                .child(uid)
+                                .setValue(userDB)
                                 .addOnSuccessListener {
-                                    Toast.makeText(this, "Registro exitoso.", Toast.LENGTH_LONG).show()
-
-                                    //Limpiar los campos
-                                    etNombre.setText("")
-                                    etApellido.setText("")
-                                    etCorreo.setText("")
-                                    etPassword.setText("")
-                                    etCarrera.setSelection(0)
-
+                                    Toast.makeText(this, "Registro exitoso.", Toast.LENGTH_LONG)
+                                        .show()
+                                    startActivity(Intent(this, DashboardActivity::class.java))
+                                    enableInputFields()
+                                    finish()
                                 }
                                 .addOnFailureListener { e ->
-                                    Toast.makeText(this, "Error guardando: ${e.message}", Toast.LENGTH_LONG).show()
+                                    Toast.makeText(
+                                        this,
+                                        "Error guardando: ${e.message}",
+                                        Toast.LENGTH_LONG
+                                    ).show()
                                 }
 
                         } else {
-                            val error = task.exception?.message ?: "Error al registrar"
-                            Toast.makeText(this, error, Toast.LENGTH_LONG).show()
+                            Toast.makeText(
+                                this,
+                                task.exception?.message ?: "Error al registrar",
+                                Toast.LENGTH_LONG
+                            ).show()
                         }
                     }
             }
-
-
-
-            enableInputFields()
         }
     }
 
@@ -144,7 +171,7 @@ class RegistrarActivity : AppCompatActivity() {
 
 
 
-    private fun loadFieldsForEndingRegister() {
+        private fun loadFieldsForEndingRegister() {
 
         val user = FirebaseAuth.getInstance().currentUser
 
@@ -155,10 +182,14 @@ class RegistrarActivity : AppCompatActivity() {
             val photoUrl = user.photoUrl       // URL de la foto de perfil
             val isEmailVerified = user.isEmailVerified
 
-            val partes = displayName.trim().split(" ")
 
-            val nombre = if (partes.isNotEmpty()) partes[0] else ""
-            val apellido = if (partes.size > 1) partes.drop(1).joinToString(" ") else ""
+            val partes = displayName.trim().split("\\s+".toRegex())
+
+            val nombre = if (partes.size >= 2) "${partes[0]} ${partes[1]}" else partes.getOrNull(0) ?: ""
+            val apellido = if (partes.size >= 4) "${partes[2]} ${partes[3]}"
+            else if (partes.size == 3) partes[2]
+            else ""
+
 
 
             binding.inputNombre.setText(nombre)
@@ -181,6 +212,7 @@ class RegistrarActivity : AppCompatActivity() {
         binding.inputApellido.isEnabled = false
         binding.inputMail.isEnabled = false
         binding.inputPass.isEnabled = false
+        binding.inputPass.visibility = Button.GONE
 
 
     }
@@ -192,6 +224,7 @@ class RegistrarActivity : AppCompatActivity() {
         binding.inputMail.isEnabled = true
         binding.inputPass.isEnabled = true
         binding.spinnerCarrera.isEnabled = true
+        binding.inputPass.visibility = Button.VISIBLE
     }
 
 

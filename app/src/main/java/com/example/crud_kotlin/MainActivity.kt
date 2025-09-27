@@ -39,16 +39,20 @@ class MainActivity : AppCompatActivity() {
             }
             else{
                 startActivity(Intent(applicationContext,LoginActivity::class.java))
+                finish()
             }
         }
 
         binding.btnRegistrar.setOnClickListener {
             startActivity(Intent(applicationContext,RegistrarActivity::class.java))
+            finish()
         }
 
     }
 
     private fun irDashboard(){
         startActivity(Intent(applicationContext, DashboardActivity::class.java))
+        finish()
+
     }
 }
