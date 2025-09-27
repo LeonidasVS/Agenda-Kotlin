@@ -44,7 +44,7 @@ class PerfilActivity : AppCompatActivity() {
                         val usuario = snapshot.getValue(Registro::class.java)
                         usuario?.let {
                             // Ejemplo: mostrar en TextViews
-                            binding.tvNombre.text= it.nombre
+                            binding.tvNombre.text= it.nombre + " " + it.apellido
                             binding.tvEmail.text = it.email
                             binding.tvCarrera.text = it.carrera
                             binding.tvNombre.visibility = View.VISIBLE
