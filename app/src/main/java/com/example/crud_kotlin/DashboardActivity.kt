@@ -59,7 +59,22 @@ class DashboardActivity : AppCompatActivity() {
                 }
             }
         }
+
+        binding.btnConfiguracion.setOnClickListener {
+
+            startActivity(Intent(applicationContext, PerfilActivity::class.java))
+
+        }
+
+
+
+
     }
+
+
+
+
+
 
     private fun verFragmentoNotas(){
         binding.tvTitulo.text = "StudyPlanner"

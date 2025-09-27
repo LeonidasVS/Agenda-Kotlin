@@ -50,9 +50,15 @@ dependencies {
     implementation(libs.androidx.constraintlayout)
     //Dependencias de FireBase
     implementation(platform("com.google.firebase:firebase-bom:34.2.0"))
+    implementation("com.google.android.gms:play-services-auth:20.7.0")
     implementation("com.google.firebase:firebase-analytics")
     implementation("com.google.firebase:firebase-auth")
     implementation("com.google.firebase:firebase-database")
+
+    implementation("com.squareup.picasso:picasso:2.8")
+
+
+
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
     testImplementation(libs.junit)
