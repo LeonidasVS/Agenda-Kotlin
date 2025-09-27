@@ -1,8 +1,12 @@
 package com.example.crud_kotlin
 
 import android.os.Bundle
+import android.util.Log
+import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Spinner
+import android.widget.SpinnerAdapter
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -23,6 +27,23 @@ class RegistrarActivity : AppCompatActivity() {
     //Variable para iniciar FirebaseAuth
     private lateinit var auth: FirebaseAuth
 
+    var carrerasUNAB: Array<String?> = arrayOf<String?>(
+        "-- Seleccione una carrera --",
+        "Licenciatura en Psicología",
+        "Licenciatura en Nutrición",
+        "Licenciatura en Trabajo Social",
+        "Licenciatura en Enfermería",
+        "Tecnólogo en Enfermería",
+        "Técnico en Enfermería",
+        "Técnico en Optometría",
+        "Técnico en Mercadeo",
+        "Técnico en Idioma Inglés",
+        "Técnico en Computación",
+        "Técnico en Contabilidad",
+        "Técnico en Diseño Gráfico",
+        "Ingeniería en Sistemas y Computación"
+    )
+
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
@@ -39,13 +60,25 @@ class RegistrarActivity : AppCompatActivity() {
             insets
         }
 
+        //Metodo de carga de select
+        val adapter = ArrayAdapter(
+            this,  // Contexto (Activity)
+            android.R.layout.simple_spinner_item, // Layout del item seleccionado
+            carrerasUNAB
+        )
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        binding.spinnerCarrera.adapter = adapter
+
+        loadFieldsForEndingRegister()
+
+
         // Apuntnado a cada ID del layout activity_registrar
         val etNombre = findViewById<EditText>(R.id.inputNombre)
         val etApellido = findViewById<EditText>(R.id.inputApellido)
         val etCorreo = findViewById<EditText>(R.id.inputMail)
         val etPassword = findViewById<EditText>(R.id.inputPass)
-        val etCarrera = findViewById<EditText>(R.id.inputCarrera)
-        val etCiclo = findViewById<EditText>(R.id.inputCiclo)
+        val etCarrera = findViewById<Spinner>(R.id.spinnerCarrera)
+
 
         // Metodo del boton
         binding.botonRegistrar.setOnClickListener {
@@ -53,12 +86,15 @@ class RegistrarActivity : AppCompatActivity() {
             val nombre=etNombre.text.toString().trim()
             val apellido=etApellido.text.toString().trim()
             val correo=etCorreo.text.toString().trim()
-            val carrera=etCarrera.text.toString().trim()
-            val ciclo=etCiclo.text.toString().trim()
+            val carrera=etCarrera.selectedItem.toString().trim()
+
             val contra=etPassword.text.toString().trim()
+            val user = FirebaseAuth.getInstance().currentUser
+
+
 
             //Validando campos
-            if(nombre.isEmpty() || apellido.isEmpty() || correo.isEmpty() || carrera.isEmpty() || ciclo.isEmpty()){
+            if(nombre.isEmpty() || apellido.isEmpty() || correo.isEmpty() || carrera.isEmpty()){
                 Toast.makeText(this, "¡Completa los campos vacios!", Toast.LENGTH_LONG).show()
             }else if(contra.length<6){
                 Toast.makeText(this, "¡La contraseña debe tener mas de 6 digitos!", Toast.LENGTH_LONG).show()
@@ -71,7 +107,7 @@ class RegistrarActivity : AppCompatActivity() {
                             val firebaseUser = auth.currentUser
                             val uid = firebaseUser?.uid ?: return@addOnCompleteListener
 
-                            val user = Registro(nombre, apellido, correo, carrera, ciclo)
+                            val user = Registro(nombre, apellido, correo, carrera)
 
                             // Guardar en Realtime Database
                             val dbRef = FirebaseDatabase.getInstance().getReference("users")
@@ -84,8 +120,8 @@ class RegistrarActivity : AppCompatActivity() {
                                     etApellido.setText("")
                                     etCorreo.setText("")
                                     etPassword.setText("")
-                                    etCarrera.setText("")
-                                    etCiclo.setText("")
+                                    etCarrera.setSelection(0)
+
                                 }
                                 .addOnFailureListener { e ->
                                     Toast.makeText(this, "Error guardando: ${e.message}", Toast.LENGTH_LONG).show()
@@ -97,6 +133,66 @@ class RegistrarActivity : AppCompatActivity() {
                         }
                     }
             }
+
+
+
+            enableInputFields()
         }
     }
+
+
+
+
+
+    private fun loadFieldsForEndingRegister() {
+
+        val user = FirebaseAuth.getInstance().currentUser
+
+        if (user != null) {
+            val uid = user.uid                 // ID único de usuario
+            val email = user.email             // correo del usuario
+            val displayName = user.displayName.toString() // nombre completo (solo si lo configuraste)
+            val photoUrl = user.photoUrl       // URL de la foto de perfil
+            val isEmailVerified = user.isEmailVerified
+
+            val partes = displayName.trim().split(" ")
+
+            val nombre = if (partes.isNotEmpty()) partes[0] else ""
+            val apellido = if (partes.size > 1) partes.drop(1).joinToString(" ") else ""
+
+
+            binding.inputNombre.setText(nombre)
+            binding.inputApellido.setText(apellido)
+            binding.inputMail.setText(email)
+            disableInputFields()
+
+
+        }
+
+
+
+    }
+
+
+
+    private fun disableInputFields() {
+
+        binding.inputNombre.isEnabled = false
+        binding.inputApellido.isEnabled = false
+        binding.inputMail.isEnabled = false
+        binding.inputPass.isEnabled = false
+
+
+    }
+
+    private fun enableInputFields() {
+
+        binding.inputNombre.isEnabled = true
+        binding.inputApellido.isEnabled = true
+        binding.inputMail.isEnabled = true
+        binding.inputPass.isEnabled = true
+        binding.spinnerCarrera.isEnabled = true
+    }
+
+
 }

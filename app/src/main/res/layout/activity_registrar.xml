@@ -84,28 +84,48 @@
                 android:drawableStart="@drawable/ic_contrasena"/>
         </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp">
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/inputCarrera"
-                style="@style/EstiloInput"
-                android:hint="Carrera"
-                android:drawableStart="@drawable/ic_carrera" />
-        </com.google.android.material.textfield.TextInputLayout>
+<!--        <com.google.android.material.textfield.TextInputLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginTop="8dp">-->
+<!--            <com.google.android.material.textfield.TextInputEditText-->
+<!--                android:id="@+id/inputCarrera"-->
+<!--                style="@style/EstiloInput"-->
+<!--                android:hint="Carrera"-->
+<!--                android:drawableStart="@drawable/ic_carrera" />-->
+<!--        </com.google.android.material.textfield.TextInputLayout>-->
+
 
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/layoutCarrera"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp">
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/inputCiclo"
-                style="@style/EstiloInput"
-                android:inputType="number"
-                android:hint="Ciclo"
-                android:drawableStart="@drawable/ic_ciclo" />
+            android:layout_marginTop="8dp"
+            android:hint="Carrera"
+            style="@style/EstiloInput">
+
+            <Spinner
+                android:id="@+id/spinnerCarrera"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:paddingStart="48dp"
+
+                android:spinnerMode="dropdown"
+                style="@style/EstiloInput"/>
         </com.google.android.material.textfield.TextInputLayout>
+
+<!--        <com.google.android.material.textfield.TextInputLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginTop="8dp">-->
+<!--            <com.google.android.material.textfield.TextInputEditText-->
+<!--                android:id="@+id/inputCiclo"-->
+<!--                style="@style/EstiloInput"-->
+<!--                android:inputType="number"-->
+<!--                android:hint="Ciclo"-->
+<!--                android:drawableStart="@drawable/ic_ciclo" />-->
+<!--        </com.google.android.material.textfield.TextInputLayout>-->
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/botonRegistrar"

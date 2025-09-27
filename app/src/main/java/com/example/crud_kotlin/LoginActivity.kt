@@ -147,15 +147,45 @@ class LoginActivity : AppCompatActivity() {
                         database.child(uid).setValue(registro)
                     }
 
-                    // Ir al Dashboard
-                    startActivity(Intent(this, DashboardActivity::class.java))
-                    finish()
+                    checkEmailExists(user?.email.toString()) { exists, error ->
+                        if (error != null) {
+                            // manejar error
+                        } else if (exists) {
+                            // el correo ya está registrado
+                            // Ir al Dashboard
+                            startActivity(Intent(this, DashboardActivity::class.java))
+                            Toast.makeText(this, "Bienvenido", Toast.LENGTH_SHORT).show()
+                            finish()
+
+                        } else {
+                            // el correo NO está registrado
+                            // Ir al registro para terminar el registro
+                            startActivity(Intent(this, RegistrarActivity::class.java))
+                            Toast.makeText(this, "Debes Completar el registro", Toast.LENGTH_SHORT).show()
+                            finish()
+                        }
+
+                    }
+
                 } else {
                     Toast.makeText(this, "Error Firebase Auth Google", Toast.LENGTH_SHORT).show()
                 }
             }
     }
 
+
+    fun checkEmailExists(email: String, onResult: (exists: Boolean, errorMsg: String?) -> Unit) {
+        auth.fetchSignInMethodsForEmail(email)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    val signInMethods = task.result?.signInMethods
+                    val exists = !signInMethods.isNullOrEmpty()
+                    onResult(exists, null)
+                } else {
+                    onResult(false, task.exception?.localizedMessage ?: "Error desconocido")
+                }
+            }
+    }
 
 
 
