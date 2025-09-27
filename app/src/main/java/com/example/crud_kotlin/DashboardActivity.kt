@@ -1,7 +1,11 @@
 package com.example.crud_kotlin
 
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
+import android.view.View
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -9,8 +13,13 @@ import androidx.core.view.WindowInsetsCompat
 import com.example.crud_kotlin.Fragmentos.FragmentCalendario
 import com.example.crud_kotlin.Fragmentos.FragmentContacto
 import com.example.crud_kotlin.Fragmentos.FragmentRecordatorio
+import com.example.crud_kotlin.Modelos.Registro
 import com.example.crud_kotlin.databinding.ActivityDashboardBinding
 import com.example.crud_kotlin.databinding.ActivityMainBinding
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.FirebaseDatabase
+import com.squareup.picasso.Picasso
+import kotlin.random.Random
 
 class DashboardActivity : AppCompatActivity() {
 
@@ -61,15 +70,56 @@ class DashboardActivity : AppCompatActivity() {
         }
 
         binding.btnConfiguracion.setOnClickListener {
-
             startActivity(Intent(applicationContext, PerfilActivity::class.java))
-
         }
 
+        binding.tvBtnConfiguracion.setOnClickListener {
+            startActivity(Intent(applicationContext, PerfilActivity::class.java))
+        }
+
+
+        //Metodo para letras del usuario como google
+
+        circulName()
 
 
 
     }
+
+
+
+    private fun circulName() {
+        val user = FirebaseAuth.getInstance().currentUser
+
+        if (user?.photoUrl != null) {
+            user.photoUrl?.let { uri ->
+                Picasso.get().load(uri).into(binding.btnConfiguracion)
+                binding.tvBtnConfiguracion.visibility = View.GONE
+            }
+        } else {
+            val nombre = user?.displayName?.firstOrNull()?.toString() ?: "U"
+
+            binding.tvBtnConfiguracion.text = nombre
+            binding.tvBtnConfiguracion.setTextColor(Color.WHITE)
+
+            val r = Random.nextInt(50, 256)
+            val g = Random.nextInt(50, 256)
+            val b = Random.nextInt(50, 256)
+            val color = Color.rgb(r, g, b)
+
+            val shape = GradientDrawable()
+            shape.shape = GradientDrawable.OVAL
+            shape.setColor(color)
+            binding.tvBtnConfiguracion.background = shape
+        }
+    }
+
+
+
+
+
+
+
 
 
 
