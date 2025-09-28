@@ -135,43 +135,44 @@ class LoginActivity : AppCompatActivity() {
         FirebaseAuth.getInstance().signInWithCredential(credential)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
-                    // Usuario logueado
                     val user = FirebaseAuth.getInstance().currentUser
                     val uid = user?.uid
                     val database = FirebaseDatabase.getInstance().reference.child("users")
+
                     if (uid != null) {
-                        val registro = Registro(
-                            nombre = user.displayName.toString(),
-                            email = user.email.toString()
-                        )
-                        database.child(uid).setValue(registro)
-                    }
+                        // Primero verificamos si ya existe en la base de datos
+                        database.child(uid).get().addOnSuccessListener { snapshot ->
+                            if (snapshot.exists()) {
+                                // El usuario ya existe -> ir al Dashboard
+                                startActivity(Intent(this, DashboardActivity::class.java))
+                                Toast.makeText(this, "Bienvenido de nuevo", Toast.LENGTH_SHORT).show()
+                                finish()
+                            } else {
+                                // El usuario NO existe -> guardar registro básico
+                                val registro = Registro(
+                                    nombre = user.displayName.toString(),
+                                    email = user.email.toString()
+                                )
 
-                    checkEmailExists(user?.email.toString()) { exists, error ->
-                        if (error != null) {
-                            // manejar error
-                        } else if (exists) {
-                            // el correo ya está registrado
-                            // Ir al Dashboard
-                            startActivity(Intent(this, DashboardActivity::class.java))
-                            Toast.makeText(this, "Bienvenido", Toast.LENGTH_SHORT).show()
-                            finish()
-
-                        } else {
-                            // el correo NO está registrado
-                            // Ir al registro para terminar el registro
-                            startActivity(Intent(this, RegistrarActivity::class.java))
-                            Toast.makeText(this, "Debes Completar el registro", Toast.LENGTH_SHORT).show()
-                            finish()
+                                database.child(uid).setValue(registro).addOnSuccessListener {
+                                    // Mandar al registro para completar los datos faltantes
+                                    startActivity(Intent(this, RegistrarActivity::class.java))
+                                    Toast.makeText(this, "Debes completar el registro", Toast.LENGTH_SHORT).show()
+                                    finish()
+                                }.addOnFailureListener {
+                                    Toast.makeText(this, "Error guardando datos", Toast.LENGTH_SHORT).show()
+                                }
+                            }
+                        }.addOnFailureListener {
+                            Toast.makeText(this, "Error verificando usuario", Toast.LENGTH_SHORT).show()
                         }
-
                     }
-
                 } else {
                     Toast.makeText(this, "Error Firebase Auth Google", Toast.LENGTH_SHORT).show()
                 }
             }
     }
+
 
 
     fun checkEmailExists(email: String, onResult: (exists: Boolean, errorMsg: String?) -> Unit) {
