@@ -31,33 +31,51 @@
 
 
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+
+
+
+        <com.google.android.material.imageview.ShapeableImageView
+
+            android:layout_width="32dp"
+            android:layout_height="32dp"
             android:layout_marginTop="2dp"
             android:layout_alignParentEnd="true"
             android:layout_marginEnd="20dp"
             android:src="@drawable/ic_configuracion"
-            style="@style/CircularImage"
+            android:scaleType="centerCrop"
+            app:shapeAppearanceOverlay="@style/CircularImage"
             android:clickable="true"
-            android:id="@+id/btn_configuracion"/>
+            android:id="@+id/btn_configuracion"
+
+            app:strokeWidth="2dp" />
+
+<!--        <ImageView-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginTop="2dp"-->
+<!--            android:layout_alignParentEnd="true"-->
+<!--            android:layout_marginEnd="20dp"-->
+<!--            android:src="@drawable/ic_configuracion"-->
+<!--            style="@style/CircularImage"-->
+<!--            android:clickable="true"-->
+<!--            android:id="@+id/btn_configuracion"/>-->
 
 
         <TextView
             android:id="@+id/tv_btn_configuracion"
             android:layout_width="42dp"
             android:layout_height="42dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="17dp"
+            android:background="@drawable/circulo_blanco"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center"
+            android:padding="10dp"
             android:text="C"
             android:textColor="#FFFFFF"
             android:textSize="20dp"
-            android:textStyle="bold"
-            android:gravity="center"
-            android:padding="10dp"
-            android:background="@drawable/circulo_blanco"
-            android:layout_alignParentEnd="true"
-            android:layout_marginEnd="20dp"
-            android:clickable="true"
-            android:focusable="true" />
+            android:textStyle="bold" />
 
 
     </RelativeLayout>
@@ -75,7 +93,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="-31dp"
+        android:layout_marginBottom="-35dp"
         app:labelVisibilityMode="labeled"
         app:menu="@menu/opciones_menu" />
 

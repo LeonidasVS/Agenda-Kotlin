@@ -79,7 +79,6 @@ class DashboardActivity : AppCompatActivity() {
 
 
         //Metodo para letras del usuario como google
-
         circulName()
 
 
@@ -97,7 +96,11 @@ class DashboardActivity : AppCompatActivity() {
                 binding.tvBtnConfiguracion.visibility = View.GONE
             }
         } else {
-            val nombre = user?.displayName?.firstOrNull()?.toString() ?: "U"
+            val nombre = when {
+                !user?.displayName.isNullOrEmpty() -> user?.displayName?.first().toString().uppercase()
+                !user?.email.isNullOrEmpty() -> user?.email?.first().toString().uppercase()
+                else -> "U"
+            }
 
             binding.tvBtnConfiguracion.text = nombre
             binding.tvBtnConfiguracion.setTextColor(Color.WHITE)

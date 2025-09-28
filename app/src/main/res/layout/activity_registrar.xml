@@ -75,7 +75,8 @@
         <com.google.android.material.textfield.TextInputLayout
             android:layout_marginTop="8dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            app:passwordToggleEnabled="true">
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/inputPass"
                 style="@style/EstiloInput"
@@ -96,24 +97,48 @@
 <!--        </com.google.android.material.textfield.TextInputLayout>-->
 
 
+<!--        <com.google.android.material.textfield.TextInputLayout-->
+<!--            android:id="@+id/layoutCarrera"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginTop="8dp"-->
+<!--            android:hint="Carrera"-->
+<!--            style="@style/EstiloInput"-->
+<!--            android:gravity="start"-->
+
+<!--            >-->
+
+<!--            <Spinner-->
+<!--                android:id="@+id/spinnerCarrera"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:background="@android:color/transparent"-->
+<!--                android:paddingStart="48dp"-->
+
+
+<!--                android:spinnerMode="dropdown"-->
+<!--                style="@style/EstiloInput"/>-->
+<!--        </com.google.android.material.textfield.TextInputLayout>-->
+
+
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/layoutCarrera"
+            android:id="@+id/layoutCarrera2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:hint="Carrera"
-            style="@style/EstiloInput">
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
 
-            <Spinner
+            <com.google.android.material.textfield.MaterialAutoCompleteTextView
                 android:id="@+id/spinnerCarrera"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@android:color/transparent"
-                android:paddingStart="48dp"
+                android:inputType="none"
+                android:drawableStart="@drawable/ic_carrera"
+                style="@style/EstiloInput" />
 
-                android:spinnerMode="dropdown"
-                style="@style/EstiloInput"/>
         </com.google.android.material.textfield.TextInputLayout>
+
 
 <!--        <com.google.android.material.textfield.TextInputLayout-->
 <!--            android:layout_width="match_parent"-->

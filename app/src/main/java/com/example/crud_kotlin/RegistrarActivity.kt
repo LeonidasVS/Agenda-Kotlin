@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Spinner
@@ -28,23 +29,6 @@ class RegistrarActivity : AppCompatActivity() {
     //Variable para iniciar FirebaseAuth
     private lateinit var auth: FirebaseAuth
 
-    var carrerasUNAB: Array<String?> = arrayOf<String?>(
-        "-- Seleccione una carrera --",
-        "Licenciatura en Psicología",
-        "Licenciatura en Nutrición",
-        "Licenciatura en Trabajo Social",
-        "Licenciatura en Enfermería",
-        "Tecnólogo en Enfermería",
-        "Técnico en Enfermería",
-        "Técnico en Optometría",
-        "Técnico en Mercadeo",
-        "Técnico en Idioma Inglés",
-        "Técnico en Computación",
-        "Técnico en Contabilidad",
-        "Técnico en Diseño Gráfico",
-        "Ingeniería en Sistemas y Computación"
-    )
-
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
@@ -61,14 +45,8 @@ class RegistrarActivity : AppCompatActivity() {
             insets
         }
 
-        //Metodo de carga de select
-        val adapter = ArrayAdapter(
-            this,  // Contexto (Activity)
-            android.R.layout.simple_spinner_item, // Layout del item seleccionado
-            carrerasUNAB
-        )
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        binding.spinnerCarrera.adapter = adapter
+
+        setupCarreraSpinner()
 
         loadFieldsForEndingRegister()
 
@@ -78,7 +56,7 @@ class RegistrarActivity : AppCompatActivity() {
         val etApellido = findViewById<EditText>(R.id.inputApellido)
         val etCorreo = findViewById<EditText>(R.id.inputMail)
         val etPassword = findViewById<EditText>(R.id.inputPass)
-        val etCarrera = findViewById<Spinner>(R.id.spinnerCarrera)
+        val etCarrera = findViewById<AutoCompleteTextView>(R.id.spinnerCarrera)
 
 
         // Metodo del boton
@@ -87,7 +65,7 @@ class RegistrarActivity : AppCompatActivity() {
             val nombre = etNombre.text.toString().trim()
             val apellido = etApellido.text.toString().trim()
             val correo = etCorreo.text.toString().trim()
-            val carrera = etCarrera.selectedItem.toString().trim()
+            val carrera = etCarrera.text.toString().trim()
             val contra = etPassword.text.toString().trim()
 
             if (nombre.isEmpty() || apellido.isEmpty() || correo.isEmpty() || carrera.isEmpty()) {
@@ -167,10 +145,6 @@ class RegistrarActivity : AppCompatActivity() {
         }
     }
 
-
-
-
-
         private fun loadFieldsForEndingRegister() {
 
         val user = FirebaseAuth.getInstance().currentUser
@@ -225,6 +199,46 @@ class RegistrarActivity : AppCompatActivity() {
         binding.inputPass.isEnabled = true
         binding.spinnerCarrera.isEnabled = true
         binding.inputPass.visibility = Button.VISIBLE
+    }
+
+
+
+    //metoodo para el llenado del selectitem
+    private fun setupCarreraSpinner() {
+        val carreras = arrayOf(
+            "-- Seleccione una carrera --",
+            "Licenciatura en Psicología",
+            "Licenciatura en Nutrición",
+            "Licenciatura en Trabajo Social",
+            "Licenciatura en Enfermería",
+            "Tecnólogo en Enfermería",
+            "Técnico en Enfermería",
+            "Técnico en Optometría",
+            "Técnico en Mercadeo",
+            "Técnico en Idioma Inglés",
+            "Técnico en Computación",
+            "Técnico en Contabilidad",
+            "Técnico en Diseño Gráfico",
+            "Ingeniería en Sistemas y Computación"
+        )
+
+        val autoComplete = findViewById<AutoCompleteTextView>(R.id.spinnerCarrera)
+
+        // Crear adapter
+        val adapter = ArrayAdapter(this, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, carreras)
+        autoComplete.setAdapter(adapter)
+
+        // Configurar comportamiento como spinner
+        autoComplete.setOnClickListener {
+            autoComplete.showDropDown()
+        }
+
+        // Manejar selección
+        autoComplete.setOnItemClickListener { _, _, position, _ ->
+            val selectedCarrera = carreras[position]
+            // Procesar selección
+            Toast.makeText(this, "Seleccionado: $selectedCarrera", Toast.LENGTH_SHORT).show()
+        }
     }
 
 
