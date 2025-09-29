@@ -11,20 +11,20 @@
     android:background="@color/blanco">
 
     <TextView
-        android:text="Perfil De Usuario"
-        android:layout_marginTop="50dp"
+        android:text="Perfil"
+        android:fontFamily="@font/poppins_semibold"
+        android:layout_marginTop="20dp"
         android:textAlignment="center"
         android:textStyle="bold"
-        android:textSize="27dp"
-        android:textColor="@color/grisAzulado"
+        android:textSize="25dp"
+        android:textColor="@color/azul"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingLeft="20dp"
+        android:orientation="vertical"
         android:layout_marginTop="30dp"
         android:gravity="center">
 
@@ -34,90 +34,85 @@
             android:src="@drawable/img_perfil"/>
 
         <TextView
+            android:id="@+id/NombreUsuario"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
+            android:textAlignment="center"
+            android:fontFamily="@font/poppins_medium"
+            android:layout_marginTop="20dp"
+            android:text="Nombre Usuario"
+            android:textColor="@color/black"
             android:textSize="22sp"
-            android:textStyle="bold"
-            android:textColor="@color/azul"
-            android:text="Juan Leonidas Villafranco Sibrain"/>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="25dp"
-        android:orientation="vertical">
+            android:textStyle="bold" />
 
         <TextView
+            android:id="@+id/carreraUsuario"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:drawableStart="@drawable/ic_carrera"
-            android:drawablePadding="15dp"
-            android:text="Ingeneria en sistemas"
+            android:text="carrera"
+            android:fontFamily="@font/poppins_light"
             android:textColor="@color/grisAzulado"
             android:textSize="16sp"
-            android:textStyle="italic" />
+            android:layout_marginTop="2dp"
+            android:textAlignment="center"/>
+
         <TextView
+            android:id="@+id/correoUsuario"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:drawableStart="@drawable/ic_mail"
-            android:drawablePadding="15dp"
-            android:text="leonidasvillafrancos@gmail.com"
+            android:layout_marginTop="5dp"
+            android:fontFamily="@font/poppins_light"
+            android:text="ejemplo@gmail.com"
+            android:textAlignment="center"
             android:textColor="@color/grisAzulado"
-            android:textSize="16sp"
-            android:layout_marginTop="12dp"
-            android:textStyle="italic"/>
-
+            android:textSize="16sp"/>
     </LinearLayout>
+
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center">
-
-        <com.google.android.material.button.MaterialButton
-            android:layout_width="130dp"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="12dp"
-            app:cornerRadius="8dp"
-            android:backgroundTint="@color/azul"
-            android:textSize="16dp"
-            android:textStyle="bold"
-            android:drawableEnd="@drawable/ic_editar"
-            android:text="Editar"/>
-
-        <com.google.android.material.button.MaterialButton
-            android:layout_width="142dp"
-            android:layout_height="wrap_content"
-            android:textStyle="bold"
-            android:textSize="16dp"
-            android:drawableEnd="@drawable/ic_eliminar"
-            app:cornerRadius="8dp"
-            android:backgroundTint="@color/rojo"
-            android:layout_marginStart="12dp"
-            android:text="Eliminar"/>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:orientation="vertical"
         android:layout_marginTop="30dp"
         android:gravity="center">
 
-        <TextView
-            android:id="@+id/cerrarSesion"
-            android:textAlignment="center"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:textColor="@color/grisAzulado"
-            android:layout_width="150dp"
+        <com.google.android.material.button.MaterialButton
+            android:layout_width="375dp"
             android:layout_height="wrap_content"
+            android:drawableEnd="@drawable/ic_editar"
+            android:text="Editar Cuenta"
+            android:textColor="@color/black"
+            android:backgroundTint="@color/blanco"
+            android:fontFamily="@font/poppins_semibold"
+            android:textSize="16dp"
+            android:textStyle="bold"
+            app:cornerRadius="4dp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:layout_width="375dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:backgroundTint="@color/blanco"
+            android:drawableEnd="@drawable/ic_eliminar_cuenta"
+            android:fontFamily="@font/poppins_semibold"
+            android:text="Eliminar Cuenta"
+            android:textColor="@color/black"
+            android:textSize="16dp"
+            android:textStyle="bold"
+            app:cornerRadius="4dp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/cerrarSesion"
+            android:layout_width="375dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="40dp"
+            android:backgroundTint="@color/azul"
             android:drawableEnd="@drawable/ic_cerrar_sesion"
-            android:text="Cerrar Sesion"/>
+            android:fontFamily="@font/poppins_semibold"
+            android:text="Cerrar Sesion"
+            android:textSize="16sp"
+            app:cornerRadius="8dp" />
+
     </LinearLayout>
+
 </androidx.appcompat.widget.LinearLayoutCompat>
