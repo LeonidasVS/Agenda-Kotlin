@@ -5,5 +5,5 @@ data class Registro(
     val apellido: String = "",
     val email: String = "",
     val carrera: String = "",
-    val ciclo: String = ""
+    val passwor: String=""
 )

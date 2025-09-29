@@ -8,7 +8,6 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.crud_kotlin.databinding.ActivityMainBinding
 import com.google.firebase.auth.FirebaseAuth
-
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
@@ -17,38 +16,36 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        binding=ActivityMainBinding.inflate(layoutInflater)
-
+        binding = ActivityMainBinding.inflate(layoutInflater)
         firebaseAuth = FirebaseAuth.getInstance()
-        if (firebaseAuth.currentUser != null){
-            irDashboard()
-        }
 
         enableEdgeToEdge()
         setContentView(binding.root)
+
+        // ✅ Si ya hay sesión activa, va directo al Dashboard
+        if (firebaseAuth.currentUser != null) {
+            irDashboard()
+            finish()
+        }
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
 
+        // Botón Login
         binding.btnLogin.setOnClickListener {
-
-            if (firebaseAuth.currentUser != null){
-                irDashboard()
-            }
-            else{
-                startActivity(Intent(applicationContext,LoginActivity::class.java))
-            }
+            startActivity(Intent(this, LoginActivity::class.java))
         }
 
+        // Botón Registrar
         binding.btnRegistrar.setOnClickListener {
-            startActivity(Intent(applicationContext,RegistrarActivity::class.java))
+            startActivity(Intent(this, RegistrarActivity::class.java))
         }
-
     }
 
-    private fun irDashboard(){
-        startActivity(Intent(applicationContext, DashboardActivity::class.java))
+    private fun irDashboard() {
+        startActivity(Intent(this, DashboardActivity::class.java))
     }
 }

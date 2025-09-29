@@ -13,7 +13,7 @@
 
         <ImageView
             android:layout_width="match_parent"
-            android:layout_height="150dp"
+            android:layout_height="160dp"
             android:layout_marginTop="-50dp"
             android:src="@drawable/img_login" />
 
@@ -74,11 +74,12 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="40dp"
             android:layout_marginTop="30dp"
+            android:textStyle="bold"
             android:layout_marginRight="40dp"
             android:backgroundTint="@color/azul"
             android:fontFamily="@font/poppins_medium"
             android:text="Verificar"
             android:textColor="@color/blanco"
-            android:textSize="12sp"
+            android:textSize="13sp"
             app:cornerRadius="8dp" />
 </androidx.appcompat.widget.LinearLayoutCompat>

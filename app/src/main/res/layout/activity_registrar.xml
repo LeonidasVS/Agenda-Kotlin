@@ -85,27 +85,21 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/layoutCarrera"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp">
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/inputCarrera"
-                style="@style/EstiloInput"
-                android:hint="Carrera"
-                android:drawableStart="@drawable/ic_carrera" />
+            android:layout_marginTop="8dp"
+            android:hint="Carrera"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
+
+            <com.google.android.material.textfield.MaterialAutoCompleteTextView
+                android:id="@+id/spinnerCarrera"
+                android:inputType="none"
+                android:drawableStart="@drawable/ic_carrera"
+                style="@style/EstiloInput" />
+
         </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp">
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/inputCiclo"
-                style="@style/EstiloInput"
-                android:inputType="number"
-                android:hint="Ciclo"
-                android:drawableStart="@drawable/ic_ciclo" />
-        </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/botonRegistrar"

@@ -31,7 +31,7 @@
             android:text="@string/bienvenido"
             android:textAlignment="center"
             android:textColor="@color/azul"
-            android:textSize="23sp"
+            android:textSize="25sp"
             android:fontFamily="@font/poppins_medium"
             android:textStyle="bold"
             android:layout_marginBottom="10dp"/>

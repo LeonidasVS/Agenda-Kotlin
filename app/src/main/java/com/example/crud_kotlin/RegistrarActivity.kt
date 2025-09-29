@@ -44,8 +44,7 @@ class RegistrarActivity : AppCompatActivity() {
         val etApellido = findViewById<EditText>(R.id.inputApellido)
         val etCorreo = findViewById<EditText>(R.id.inputMail)
         val etPassword = findViewById<EditText>(R.id.inputPass)
-        val etCarrera = findViewById<EditText>(R.id.inputCarrera)
-        val etCiclo = findViewById<EditText>(R.id.inputCiclo)
+        val etCarrera = findViewById<EditText>(R.id.spinnerCarrera)
 
         // Metodo del boton
         binding.botonRegistrar.setOnClickListener {
@@ -54,11 +53,10 @@ class RegistrarActivity : AppCompatActivity() {
             val apellido=etApellido.text.toString().trim()
             val correo=etCorreo.text.toString().trim()
             val carrera=etCarrera.text.toString().trim()
-            val ciclo=etCiclo.text.toString().trim()
             val contra=etPassword.text.toString().trim()
 
             //Validando campos
-            if(nombre.isEmpty() || apellido.isEmpty() || correo.isEmpty() || carrera.isEmpty() || ciclo.isEmpty()){
+            if(nombre.isEmpty() || apellido.isEmpty() || correo.isEmpty() || carrera.isEmpty()){
                 Toast.makeText(this, "¡Completa los campos vacios!", Toast.LENGTH_LONG).show()
             }else if(contra.length<6){
                 Toast.makeText(this, "¡La contraseña debe tener mas de 6 digitos!", Toast.LENGTH_LONG).show()
@@ -71,7 +69,7 @@ class RegistrarActivity : AppCompatActivity() {
                             val firebaseUser = auth.currentUser
                             val uid = firebaseUser?.uid ?: return@addOnCompleteListener
 
-                            val user = Registro(nombre, apellido, correo, carrera, ciclo)
+                            val user = Registro(nombre, apellido, correo, carrera)
 
                             // Guardar en Realtime Database
                             val dbRef = FirebaseDatabase.getInstance().getReference("users")
@@ -85,7 +83,6 @@ class RegistrarActivity : AppCompatActivity() {
                                     etCorreo.setText("")
                                     etPassword.setText("")
                                     etCarrera.setText("")
-                                    etCiclo.setText("")
                                 }
                                 .addOnFailureListener { e ->
                                     Toast.makeText(this, "Error guardando: ${e.message}", Toast.LENGTH_LONG).show()
