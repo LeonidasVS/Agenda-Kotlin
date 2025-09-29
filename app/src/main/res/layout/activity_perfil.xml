@@ -110,6 +110,7 @@
         android:gravity="center">
 
         <TextView
+            android:id="@+id/cerrarSesion"
             android:textAlignment="center"
             android:textSize="20sp"
             android:textStyle="bold"

@@ -25,7 +25,6 @@ class MainActivity : AppCompatActivity() {
         // ✅ Si ya hay sesión activa, va directo al Dashboard
         if (firebaseAuth.currentUser != null) {
             irDashboard()
-            finish()
         }
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
@@ -46,6 +45,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun irDashboard() {
-        startActivity(Intent(this, DashboardActivity::class.java))
+        val intent = Intent(this, DashboardActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(intent)
+        finish()
     }
 }

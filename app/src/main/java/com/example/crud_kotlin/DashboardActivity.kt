@@ -59,6 +59,10 @@ class DashboardActivity : AppCompatActivity() {
                 }
             }
         }
+
+        binding.btnPerfil.setOnClickListener {
+            startActivity(Intent(this, PerfilActivity::class.java))
+        }
     }
 
     private fun verFragmentoNotas(){

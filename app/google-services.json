@@ -10,7 +10,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:114605813343:android:c2d6a81ccecfde535375ea",
         "android_client_info": {
-          "package_name": "com.example.agenda_kotlin"
+          "package_name": "com.example.crud_kotlin"
         }
       },
       "oauth_client": [

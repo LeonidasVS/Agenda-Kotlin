@@ -1,5 +1,6 @@
 package com.example.crud_kotlin
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
@@ -88,6 +89,10 @@ class RegistrarActivity : AppCompatActivity() {
                                     etCorreo.setText("")
                                     etPassword.setText("")
                                     etCarrera.setText("")
+
+                                    val intent = Intent(this, DashboardActivity::class.java)
+                                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                                    startActivity(intent)
                                     finish()
                                 }
                                 .addOnFailureListener { e ->
