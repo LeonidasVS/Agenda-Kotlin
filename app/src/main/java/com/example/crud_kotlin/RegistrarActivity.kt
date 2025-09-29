@@ -1,6 +1,8 @@
 package com.example.crud_kotlin
 
 import android.os.Bundle
+import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
@@ -30,6 +32,7 @@ class RegistrarActivity : AppCompatActivity() {
         binding = ActivityRegistrarBinding.inflate(layoutInflater)
 
         auth = FirebaseAuth.getInstance()
+
         enableEdgeToEdge()
         setContentView(binding.root)
 
@@ -38,6 +41,8 @@ class RegistrarActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+
+        setupCarreraSpinner()
 
         // Apuntnado a cada ID del layout activity_registrar
         val etNombre = findViewById<EditText>(R.id.inputNombre)
@@ -56,8 +61,8 @@ class RegistrarActivity : AppCompatActivity() {
             val contra=etPassword.text.toString().trim()
 
             //Validando campos
-            if(nombre.isEmpty() || apellido.isEmpty() || correo.isEmpty() || carrera.isEmpty()){
-                Toast.makeText(this, "¡Completa los campos vacios!", Toast.LENGTH_LONG).show()
+            if(nombre.isEmpty() || apellido.isEmpty() || correo.isEmpty() || carrera.isEmpty() || carrera=="-- Seleccione una carrera --"){
+                Toast.makeText(this, "¡Completa los campos vacios!", Toast.LENGTH_SHORT).show()
             }else if(contra.length<6){
                 Toast.makeText(this, "¡La contraseña debe tener mas de 6 digitos!", Toast.LENGTH_LONG).show()
             }else{
@@ -75,7 +80,7 @@ class RegistrarActivity : AppCompatActivity() {
                             val dbRef = FirebaseDatabase.getInstance().getReference("users")
                             dbRef.child(uid).setValue(user)
                                 .addOnSuccessListener {
-                                    Toast.makeText(this, "Registro exitoso.", Toast.LENGTH_LONG).show()
+                                    Toast.makeText(this, "Registro exitoso.", Toast.LENGTH_SHORT).show()
 
                                     //Limpiar los campos
                                     etNombre.setText("")
@@ -83,6 +88,7 @@ class RegistrarActivity : AppCompatActivity() {
                                     etCorreo.setText("")
                                     etPassword.setText("")
                                     etCarrera.setText("")
+                                    finish()
                                 }
                                 .addOnFailureListener { e ->
                                     Toast.makeText(this, "Error guardando: ${e.message}", Toast.LENGTH_LONG).show()
@@ -94,6 +100,48 @@ class RegistrarActivity : AppCompatActivity() {
                         }
                     }
             }
+        }
+
+    }
+
+    private fun setupCarreraSpinner() {
+        val carreras = arrayOf(
+            "-- Seleccione una carrera --",
+            "Licenciatura en Psicología",
+            "Licenciatura en Nutrición",
+            "Licenciatura en Trabajo Social",
+            "Licenciatura en Enfermería",
+            "Tecnólogo en Enfermería",
+            "Técnico en Enfermería",
+            "Técnico en Optometría",
+            "Técnico en Mercadeo",
+            "Técnico en Idioma Inglés",
+            "Técnico en Computación",
+            "Técnico en Contabilidad",
+            "Técnico en Diseño Gráfico",
+            "Ingeniería en Sistemas y Computación"
+        )
+
+        val autoComplete = findViewById<AutoCompleteTextView>(R.id.spinnerCarrera)
+
+        // Crear adapter
+        val adapter = ArrayAdapter(
+            this,
+            androidx.appcompat.R.layout.support_simple_spinner_dropdown_item,
+            carreras
+        )
+        autoComplete.setAdapter(adapter)
+
+        // Configurar comportamiento como spinner
+        autoComplete.setOnClickListener {
+            autoComplete.showDropDown()
+        }
+
+        // Manejar selección
+        autoComplete.setOnItemClickListener { _, _, position, _ ->
+            val selectedCarrera = carreras[position]
+            // Procesar selección
+            Toast.makeText(this, "Seleccionado: $selectedCarrera", Toast.LENGTH_SHORT).show()
         }
     }
 }

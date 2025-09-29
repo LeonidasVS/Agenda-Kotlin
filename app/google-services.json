@@ -1,26 +1,37 @@
 {
   "project_info": {
-    "project_number": "763623430584",
-    "project_id": "crud-kotlin-27fcd",
-    "storage_bucket": "crud-kotlin-27fcd.firebasestorage.app"
+    "project_number": "114605813343",
+    "firebase_url": "https://agenda-kotlin-cf80e-default-rtdb.firebaseio.com",
+    "project_id": "agenda-kotlin-cf80e",
+    "storage_bucket": "agenda-kotlin-cf80e.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:763623430584:android:ce7c9ed32b4cbd07e1574d",
+        "mobilesdk_app_id": "1:114605813343:android:c2d6a81ccecfde535375ea",
         "android_client_info": {
-          "package_name": "com.example.crud_kotlin"
+          "package_name": "com.example.agenda_kotlin"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "114605813343-3np9urf5aa9abp5l4vv6l9vm5s7vrdrc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
-          "current_key": "AIzaSyC8OGjUZHKXOs15L5j18Xvn8I4cB0m8Pk4"
+          "current_key": "AIzaSyDOA-NMo2CS35fvqDLNptFH6zqcSbzh6tg"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "114605813343-3np9urf5aa9abp5l4vv6l9vm5s7vrdrc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }
