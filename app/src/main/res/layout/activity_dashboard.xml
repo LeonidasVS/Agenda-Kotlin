@@ -27,14 +27,35 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
-        <ImageView
-            android:id="@+id/btnPerfil"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="2dp"
+        <!--
+        <com.google.android.material.imageview.ShapeableImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_alignParentEnd="true"
             android:layout_marginEnd="20dp"
-            android:src="@drawable/ic_configuracion" />
+            android:src="@drawable/img_login"
+            android:scaleType="centerCrop"
+            app:shapeAppearanceOverlay="@style/CircularImage"
+            android:clickable="true"
+            android:id="@+id/btnPerfil"
+            app:strokeWidth="1dp"
+            app:strokeColor="@color/blanco"/>
+            -->
+
+        <TextView
+            android:id="@+id/btnPerfil"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="23dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="A"
+            android:textColor="@color/blanco"
+            android:textSize="20dp"
+            android:textStyle="bold" />
 
     </RelativeLayout>
 
@@ -51,7 +72,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="-34dp"
+        android:layout_marginBottom="-27dp"
         app:labelVisibilityMode="labeled"
         app:menu="@menu/opciones_menu" />
 

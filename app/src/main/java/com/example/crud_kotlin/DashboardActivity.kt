@@ -9,25 +9,28 @@ import androidx.core.view.WindowInsetsCompat
 import com.example.crud_kotlin.Fragmentos.FragmentCalendario
 import com.example.crud_kotlin.Fragmentos.FragmentContacto
 import com.example.crud_kotlin.Fragmentos.FragmentRecordatorio
+import com.example.crud_kotlin.Objetos.Avatar
 import com.example.crud_kotlin.databinding.ActivityDashboardBinding
-import com.example.crud_kotlin.databinding.ActivityMainBinding
+import com.google.firebase.auth.FirebaseAuth
 
 class DashboardActivity : AppCompatActivity() {
 
     private lateinit var binding:ActivityDashboardBinding
+    //private lateinit var auth:FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding=ActivityDashboardBinding.inflate(layoutInflater)
-
         enableEdgeToEdge()
         setContentView(binding.root)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
+
         }
+
 
         binding.bottomNV.setOnItemSelectedListener { item ->
             when(item.itemId){
@@ -60,10 +63,42 @@ class DashboardActivity : AppCompatActivity() {
             }
         }
 
+        ObtenerLetra()
+
         binding.btnPerfil.setOnClickListener {
             startActivity(Intent(this, PerfilActivity::class.java))
         }
     }
+
+    private fun ObtenerLetra() {
+        val user = FirebaseAuth.getInstance().currentUser
+
+        // Obtener la primera letra
+        val displayName = user?.email
+        Avatar.letra = displayName?.firstOrNull()?.toString()?.uppercase() ?: "?"
+        binding.btnPerfil.text = Avatar.letra
+
+        // Generar color aleatorio solo si no existe
+        if (Avatar.color == null) {
+            val random = java.util.Random()
+            Avatar.color = android.graphics.Color.rgb(
+                random.nextInt(256),
+                random.nextInt(256),
+                random.nextInt(256)
+            )
+        }
+
+        // Crear un drawable circular con el color del singleton
+        val drawable = android.graphics.drawable.GradientDrawable()
+        drawable.shape = android.graphics.drawable.GradientDrawable.OVAL
+        drawable.setColor(Avatar.color!!)
+
+        // Asignar el drawable como fondo del TextView
+        binding.btnPerfil.background = drawable
+
+    }
+
+
 
     private fun verFragmentoNotas(){
         binding.tvTitulo.text = "StudyPlanner"

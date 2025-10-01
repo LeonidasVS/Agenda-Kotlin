@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.crud_kotlin.Modelos.Registro
+import com.example.crud_kotlin.Objetos.Avatar
 import com.example.crud_kotlin.databinding.ActivityPerfilBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
@@ -24,8 +25,6 @@ class PerfilActivity : AppCompatActivity() {
         binding = ActivityPerfilBinding.inflate(layoutInflater)
         firebaseAuth = FirebaseAuth.getInstance()
         val uid=firebaseAuth.currentUser?.uid
-
-
 
         enableEdgeToEdge()
         setContentView(binding.root)
@@ -46,7 +45,7 @@ class PerfilActivity : AppCompatActivity() {
                     if (snapshot.exists()) {
                         val usuario = snapshot.getValue(Registro::class.java)
                         usuario?.let {
-                            // Ejemplo: mostrar en TextViews
+                            // Mostrar en TextViews
                             binding.NombreUsuario.text= it.nombre + " " + it.apellido
                             binding.correoUsuario.text = it.email
                             binding.carreraUsuario.text = it.carrera
@@ -75,6 +74,17 @@ class PerfilActivity : AppCompatActivity() {
             cerrarSesion()
         }
 
+        fotoUsuario()
+
+    }
+
+    private fun fotoUsuario(){
+        val drawable = android.graphics.drawable.GradientDrawable()
+        drawable.shape = android.graphics.drawable.GradientDrawable.OVAL
+        drawable.setColor(Avatar.color ?: android.graphics.Color.GRAY)
+        binding.AvatarUsuario.background=drawable
+
+        binding.AvatarUsuario.text= Avatar.letra
 
     }
 
@@ -82,6 +92,8 @@ class PerfilActivity : AppCompatActivity() {
         if (firebaseAuth.currentUser != null) {
             firebaseAuth.signOut()
         }
+        Avatar.color = null
+        Avatar.letra= null
         irAlLogin()
     }
 

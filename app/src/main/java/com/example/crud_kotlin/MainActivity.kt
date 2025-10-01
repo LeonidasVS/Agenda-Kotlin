@@ -22,7 +22,7 @@ class MainActivity : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(binding.root)
 
-        // ✅ Si ya hay sesión activa, va directo al Dashboard
+        // Si ya hay sesión activa, va directo al Dashboard
         if (firebaseAuth.currentUser != null) {
             irDashboard()
         }
@@ -49,4 +49,5 @@ class MainActivity : AppCompatActivity() {
         startActivity(intent)
         finish()
     }
+
 }

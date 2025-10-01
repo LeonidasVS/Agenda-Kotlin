@@ -21,26 +21,31 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
         android:layout_marginTop="30dp"
-        android:gravity="center">
+        android:gravity="center"
+        android:orientation="vertical">
 
-        <ImageView
-            android:layout_width="90dp"
-            android:layout_height="90dp"
-            android:src="@drawable/img_perfil"/>
+        <TextView
+            android:id="@+id/AvatarUsuario"
+            android:layout_width="110dp"
+            android:layout_height="110dp"
+            android:textColor="@color/blanco"
+            android:gravity="center"
+            android:text="A"
+            android:textSize="80dp"/>
 
         <TextView
             android:id="@+id/NombreUsuario"
-            android:layout_width="match_parent"
+            android:layout_width="282dp"
             android:layout_height="wrap_content"
-            android:textAlignment="center"
-            android:fontFamily="@font/poppins_medium"
             android:layout_marginTop="20dp"
+            android:fontFamily="@font/poppins_medium"
             android:text="Nombre Usuario"
+            android:textAlignment="center"
             android:textColor="@color/black"
             android:textSize="22sp"
             android:textStyle="bold" />
@@ -49,12 +54,12 @@
             android:id="@+id/carreraUsuario"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="carrera"
-            android:fontFamily="@font/poppins_light"
-            android:textColor="@color/grisAzulado"
-            android:textSize="16sp"
             android:layout_marginTop="2dp"
-            android:textAlignment="center"/>
+            android:fontFamily="@font/poppins_light"
+            android:text="carrera"
+            android:textAlignment="center"
+            android:textColor="@color/grisAzulado"
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/correoUsuario"
@@ -65,9 +70,8 @@
             android:text="ejemplo@gmail.com"
             android:textAlignment="center"
             android:textColor="@color/grisAzulado"
-            android:textSize="16sp"/>
+            android:textSize="16sp" />
     </LinearLayout>
-
 
     <LinearLayout
         android:layout_width="match_parent"
