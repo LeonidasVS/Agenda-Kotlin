@@ -1,42 +1,44 @@
 package com.example.crud_kotlin
 
+import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Bundle
+import android.util.Patterns
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
-import android.widget.Button
-import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.crud_kotlin.Modelos.Registro
-import com.example.crud_kotlin.databinding.ActivityDashboardBinding
 import com.example.crud_kotlin.databinding.ActivityRegistrarBinding
-import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 
 class RegistrarActivity : AppCompatActivity() {
 
-    // Variable para inicializar el binding
+    // Binding
     private lateinit var binding: ActivityRegistrarBinding
+    private lateinit var progressDialog: ProgressDialog
 
-    //Variable para iniciar FirebaseAuth
+    // Firebase Auth
     private lateinit var auth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
-
         super.onCreate(savedInstanceState)
 
         binding = ActivityRegistrarBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         auth = FirebaseAuth.getInstance()
 
-        enableEdgeToEdge()
-        setContentView(binding.root)
+        // Instancia de ProgressDialog
+        progressDialog = ProgressDialog(this)
+        progressDialog.setTitle("Espere por favor...")
+        progressDialog.setCanceledOnTouchOutside(false)
 
+        enableEdgeToEdge()
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
@@ -45,68 +47,106 @@ class RegistrarActivity : AppCompatActivity() {
 
         setupCarreraSpinner()
 
-        // Apuntnado a cada ID del layout activity_registrar
-        val etNombre = findViewById<EditText>(R.id.inputNombre)
-        val etApellido = findViewById<EditText>(R.id.inputApellido)
-        val etCorreo = findViewById<EditText>(R.id.inputMail)
-        val etPassword = findViewById<EditText>(R.id.inputPass)
-        val etCarrera = findViewById<EditText>(R.id.spinnerCarrera)
-
-        // Metodo del boton
+        // Botón Registrar
         binding.botonRegistrar.setOnClickListener {
+            validarDatos()
+        }
+    }
 
-            val nombre=etNombre.text.toString().trim()
-            val apellido=etApellido.text.toString().trim()
-            val correo=etCorreo.text.toString().trim()
-            val carrera=etCarrera.text.toString().trim()
-            val contra=etPassword.text.toString().trim()
+    private var nombre = ""
+    private var apellido = ""
+    private var correo = ""
+    private var carrera = ""
+    private var contra = ""
 
-            //Validando campos
-            if(nombre.isEmpty() || apellido.isEmpty() || correo.isEmpty() || carrera.isEmpty() || carrera=="-- Seleccione una carrera --"){
-                Toast.makeText(this, "¡Completa los campos vacios!", Toast.LENGTH_SHORT).show()
-            }else if(contra.length<6){
-                Toast.makeText(this, "¡La contraseña debe tener mas de 6 digitos!", Toast.LENGTH_LONG).show()
-            }else{
+    private fun validarDatos() {
+        nombre = binding.inputNombre.text.toString().trim()
+        apellido = binding.inputApellido.text.toString().trim()
+        correo = binding.inputMail.text.toString().trim()
+        carrera = binding.spinnerCarrera.text.toString().trim()
+        contra = binding.inputPass.text.toString().trim()
 
-                // Creando usuario en FireBase
-                auth.createUserWithEmailAndPassword(correo, contra)
-                    .addOnCompleteListener { task ->
-                        if (task.isSuccessful) {
-                            val firebaseUser = auth.currentUser
-                            val uid = firebaseUser?.uid ?: return@addOnCompleteListener
-
-                            val user = Registro(nombre, apellido, correo, carrera)
-
-                            // Guardar en Realtime Database
-                            val dbRef = FirebaseDatabase.getInstance().getReference("users")
-                            dbRef.child(uid).setValue(user)
-                                .addOnSuccessListener {
-                                    Toast.makeText(this, "Registro exitoso.", Toast.LENGTH_SHORT).show()
-
-                                    //Limpiar los campos
-                                    etNombre.setText("")
-                                    etApellido.setText("")
-                                    etCorreo.setText("")
-                                    etPassword.setText("")
-                                    etCarrera.setText("")
-
-                                    val intent = Intent(this, DashboardActivity::class.java)
-                                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                                    startActivity(intent)
-                                    finish()
-                                }
-                                .addOnFailureListener { e ->
-                                    Toast.makeText(this, "Error guardando: ${e.message}", Toast.LENGTH_LONG).show()
-                                }
-
-                        } else {
-                            val error = task.exception?.message ?: "Error al registrar"
-                            Toast.makeText(this, error, Toast.LENGTH_LONG).show()
-                        }
-                    }
+        when {
+            nombre.isEmpty() -> {
+                binding.inputNombre.error = "Ingrese un Nombre"
+                binding.inputNombre.requestFocus()
+                return
+            }
+            apellido.isEmpty() -> {
+                binding.inputApellido.error = "Ingrese un Apellido"
+                binding.inputApellido.requestFocus()
+                return
+            }
+            correo.isEmpty() -> {
+                binding.inputMail.error = "Ingrese un Correo Electrónico"
+                binding.inputMail.requestFocus()
+                return
+            }
+            !Patterns.EMAIL_ADDRESS.matcher(correo).matches() -> {
+                binding.inputMail.error = "Correo inválido"
+                binding.inputMail.requestFocus()
+                return
+            }
+            contra.isEmpty() || contra.length < 6 -> {
+                binding.inputPass.error = "La contraseña debe tener al menos 6 caracteres"
+                binding.inputPass.requestFocus()
+                return
+            }
+            carrera == "-- Seleccione una carrera --" || carrera.isEmpty() -> {
+                Toast.makeText(this, "Selecciona una carrera", Toast.LENGTH_SHORT).show()
+                return
             }
         }
 
+        // Mostrar progress mientras se registra
+        progressDialog.setMessage("Creando usuario...")
+        progressDialog.show()
+
+        // Crear usuario en FirebaseAuth
+        auth.createUserWithEmailAndPassword(correo, contra)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    val firebaseUser = auth.currentUser
+                    val uid = firebaseUser?.uid ?: return@addOnCompleteListener
+
+                    val user = Registro(nombre, apellido, correo, carrera)
+
+                    // Guardar en Realtime Database
+                    val dbRef = FirebaseDatabase.getInstance().getReference("users")
+                    dbRef.child(uid).setValue(user)
+                        .addOnSuccessListener {
+                            progressDialog.dismiss()
+                            limpiarCampos()
+                            registroExitoso()
+                        }
+                        .addOnFailureListener { e ->
+                            progressDialog.dismiss()
+                            Toast.makeText(this, "Error guardando: ${e.message}", Toast.LENGTH_LONG).show()
+                        }
+
+                } else {
+                    progressDialog.dismiss()
+                    val error = task.exception?.message ?: "Error al registrar"
+                    Toast.makeText(this, error, Toast.LENGTH_LONG).show()
+                }
+            }
+    }
+
+    private fun limpiarCampos() {
+        binding.inputNombre.setText("")
+        binding.inputApellido.setText("")
+        binding.inputMail.setText("")
+        binding.inputPass.setText("")
+        binding.spinnerCarrera.setText("-- Seleccione una carrera --", false)
+    }
+
+    private fun registroExitoso() {
+        Toast.makeText(this, "Registro exitoso.", Toast.LENGTH_SHORT).show()
+
+        val intent = Intent(this, DashboardActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(intent)
+        finish()
     }
 
     private fun setupCarreraSpinner() {
@@ -129,7 +169,6 @@ class RegistrarActivity : AppCompatActivity() {
 
         val autoComplete = findViewById<AutoCompleteTextView>(R.id.spinnerCarrera)
 
-        // Crear adapter
         val adapter = ArrayAdapter(
             this,
             androidx.appcompat.R.layout.support_simple_spinner_dropdown_item,
@@ -137,16 +176,8 @@ class RegistrarActivity : AppCompatActivity() {
         )
         autoComplete.setAdapter(adapter)
 
-        // Configurar comportamiento como spinner
         autoComplete.setOnClickListener {
             autoComplete.showDropDown()
-        }
-
-        // Manejar selección
-        autoComplete.setOnItemClickListener { _, _, position, _ ->
-            val selectedCarrera = carreras[position]
-            // Procesar selección
-            Toast.makeText(this, "Seleccionado: $selectedCarrera", Toast.LENGTH_SHORT).show()
         }
     }
 }

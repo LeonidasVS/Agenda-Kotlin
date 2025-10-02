@@ -1,5 +1,6 @@
 package com.example.crud_kotlin
 
+import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -18,12 +19,18 @@ class PerfilActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityPerfilBinding
     private lateinit var firebaseAuth: FirebaseAuth
+    private lateinit var progressDialog: ProgressDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = ActivityPerfilBinding.inflate(layoutInflater)
         firebaseAuth = FirebaseAuth.getInstance()
+
+        progressDialog=ProgressDialog(this)
+        progressDialog.setTitle("Espere por favor...")
+        progressDialog.setCanceledOnTouchOutside(false)
+
         val uid=firebaseAuth.currentUser?.uid
 
         enableEdgeToEdge()
@@ -35,39 +42,42 @@ class PerfilActivity : AppCompatActivity() {
             insets
         }
 
-        if(uid!=null){
-            val database=FirebaseDatabase.getInstance().reference
-            binding.NombreUsuario.visibility=View.GONE
-            binding.carreraUsuario.visibility=View.GONE
-            binding.correoUsuario.visibility=View.GONE
+        if (uid != null) {
+            progressDialog.setMessage("¡Cargando Usuario!")
+            progressDialog.show()  // 🔹 Mostrar el diálogo
+
+            val database = FirebaseDatabase.getInstance().reference
+            binding.NombreUsuario.visibility = View.GONE
+            binding.carreraUsuario.visibility = View.GONE
+            binding.correoUsuario.visibility = View.GONE
+
             database.child("users").child(uid).get()
                 .addOnSuccessListener { snapshot ->
+                    progressDialog.dismiss()  // 🔹 Ocultar al terminar
+
                     if (snapshot.exists()) {
                         val usuario = snapshot.getValue(Registro::class.java)
                         usuario?.let {
-                            // Mostrar en TextViews
-                            binding.NombreUsuario.text= it.nombre + " " + it.apellido
+                            binding.NombreUsuario.text = "${it.nombre} ${it.apellido}"
                             binding.correoUsuario.text = it.email
                             binding.carreraUsuario.text = it.carrera
+
                             binding.NombreUsuario.visibility = View.VISIBLE
                             binding.carreraUsuario.visibility = View.VISIBLE
                             binding.correoUsuario.visibility = View.VISIBLE
-
                         }
-
-                    }
-
-                    else {
+                    } else {
                         Toast.makeText(this, "No se encontraron datos del usuario", Toast.LENGTH_SHORT).show()
                     }
                 }
-
                 .addOnFailureListener {
+                    progressDialog.dismiss()  // 🔹 Ocultar si falla
                     Toast.makeText(this, "Error al obtener los datos", Toast.LENGTH_SHORT).show()
                 }
-        }else{
+        } else {
             Toast.makeText(this, "No hay usuario logueado", Toast.LENGTH_SHORT).show()
         }
+
 
         // Botón cerrar sesión
         binding.cerrarSesion.setOnClickListener {

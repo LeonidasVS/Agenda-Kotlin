@@ -2,6 +2,7 @@ package com.example.crud_kotlin
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Patterns
 import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -41,50 +42,62 @@ class LoginActivity : AppCompatActivity() {
             insets
         }
 
-        // Inputs
-        val etEmail = findViewById<EditText>(R.id.inputCorreo)
-        val etPassword = findViewById<EditText>(R.id.inputPassword)
-
         // Botón Login
         binding.btnLogin.setOnClickListener {
-            val mail = etEmail.text.toString().trim()
-            val password = etPassword.text.toString().trim()
-
-            // Validar que no estén vacíos
-            if (mail.isEmpty() || password.isEmpty()) {
-                Toast.makeText(this, "Ingrese correo y contraseña", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
-
-            // Autenticación en Firebase
-            auth.signInWithEmailAndPassword(mail, password)
-                .addOnCompleteListener { task ->
-                    if (task.isSuccessful) {
-                        val uid = auth.currentUser?.uid ?: return@addOnCompleteListener
-
-                        // Obtener datos del usuario desde la base
-                        baseReferencia.child(uid).get()
-                            .addOnSuccessListener { snapshot ->
-                                if (snapshot.exists()) {
-                                    // ✅ Usuario válido → Ir al Dashboard
-                                    Toast.makeText(this, "Bienvenido", Toast.LENGTH_SHORT).show()
-                                    val intent = Intent(this, DashboardActivity::class.java)
-                                    // 🔹 Esto limpia el historial de Activities anteriores
-                                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                                    startActivity(intent)
-                                    finish()
-                                } else {
-                                    Toast.makeText(this, "No se encontraron datos del usuario", Toast.LENGTH_SHORT).show()
-                                }
-                            }
-                            .addOnFailureListener {
-                                Toast.makeText(this, "Error al obtener datos", Toast.LENGTH_SHORT).show()
-                            }
-
-                    } else {
-                        Toast.makeText(this, "Correo o contraseña incorrectos", Toast.LENGTH_SHORT).show()
-                    }
-                }
+            validarUsuario()
         }
+    }
+
+    private var password=""
+    private var correo=""
+
+    private fun validarUsuario(){
+
+        correo=binding.inputCorreo.text.toString().trim()
+        password=binding.inputPassword.text.toString().trim()
+
+        if (correo.isEmpty()) {
+            binding.inputCorreo.error = "Ingrese un Correo Electrónico"
+            binding.inputCorreo.requestFocus()
+            return
+        } else if (!Patterns.EMAIL_ADDRESS.matcher(correo).matches()) {
+            binding.inputCorreo.error = "Ingrese un Correo Electronico Valido"
+            binding.inputCorreo.requestFocus()
+            return
+        }else if (password.length < 6) {
+            binding.inputPassword.error = "Ingrese una contraseña de al menos 6 caracteres"
+            binding.inputPassword.requestFocus()
+            return
+        }
+
+        // Autenticación en Firebase
+        auth.signInWithEmailAndPassword(correo, password)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    val uid = auth.currentUser?.uid ?: return@addOnCompleteListener
+
+                    // Obtener datos del usuario desde la base
+                    baseReferencia.child(uid).get()
+                        .addOnSuccessListener { snapshot ->
+                            if (snapshot.exists()) {
+                                // ✅ Usuario válido → Ir al Dashboard
+                                Toast.makeText(this, "Bienvenido", Toast.LENGTH_SHORT).show()
+                                val intent = Intent(this, DashboardActivity::class.java)
+                                // 🔹 Esto limpia el historial de Activities anteriores
+                                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                                startActivity(intent)
+                                finish()
+                            } else {
+                                Toast.makeText(this, "No se encontraron datos del usuario", Toast.LENGTH_SHORT).show()
+                            }
+                        }
+                        .addOnFailureListener {
+                            Toast.makeText(this, "Error al obtener datos", Toast.LENGTH_SHORT).show()
+                        }
+
+                } else {
+                    Toast.makeText(this, "Correo o contraseña incorrectos", Toast.LENGTH_SHORT).show()
+                }
+            }
     }
 }
