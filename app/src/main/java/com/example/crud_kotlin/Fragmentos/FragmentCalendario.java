@@ -1,11 +1,13 @@
 package com.example.crud_kotlin.Fragmentos;
 
+import static com.example.crud_kotlin.R.*;
+
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -30,11 +32,16 @@ public class FragmentCalendario extends Fragment {
     private List<Recordatorio> listaRecordatorios = new ArrayList<>();
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
 
+    // TextView que se muestra cuando no hay datos
+    private TextView txtVacio;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_calendario, container, false);
 
         rvRecordatorios = view.findViewById(R.id.recyclerViewCalendario);
+        txtVacio = view.findViewById(R.id.txtVacio); // debe existir en tu XML
+
         adapter = new RecordatorioAdapter(getContext(), listaRecordatorios);
         rvRecordatorios.setLayoutManager(new LinearLayoutManager(getContext()));
         rvRecordatorios.setAdapter(adapter);
@@ -44,7 +51,6 @@ public class FragmentCalendario extends Fragment {
 
         FloatingActionButton fab = view.findViewById(R.id.fab_add);
         fab.setOnClickListener(v -> {
-            // Navegar al fragment de agregar recordatorio
             FragmentCalendaryAdd fragment = new FragmentCalendaryAdd();
             getParentFragmentManager().beginTransaction()
                     .replace(R.id.fragmentoFL, fragment)
@@ -57,30 +63,39 @@ public class FragmentCalendario extends Fragment {
 
     private void cargarRecordatorios() {
         FirebaseUser usuario = FirebaseAuth.getInstance().getCurrentUser();
-        if (usuario == null) {
-            Log.e("FirestoreDebug", "Usuario no autenticado");
-            return;
-        }
+        if (usuario == null) return;
 
         String uid = usuario.getUid();
-        Log.d("FirestoreDebug", "UID del usuario: " + uid);
 
         db.collection("recordatorios")
-                .whereEqualTo("idUsuario", uid) // coincide con Firestore
-                .orderBy("fecha") // opcional, recuerda crear índice si sale error
+                .whereEqualTo("idUsuario", uid)
+                .orderBy("fecha")
                 .addSnapshotListener((querySnapshot, e) -> {
-                    if (e != null) {
-                        Log.e("FirestoreError", "Error: " + e.getMessage());
-                        return;
-                    }
+                    if (e != null) return;
+
                     listaRecordatorios.clear();
                     for (DocumentSnapshot doc : querySnapshot.getDocuments()) {
-                        Log.d("FirestoreDebug", "Doc: " + doc.getData()); // Para verificar
                         Recordatorio r = doc.toObject(Recordatorio.class);
-                        listaRecordatorios.add(r);
-                    }
-                    adapter.notifyDataSetChanged();
-                });
+                        Log.d("RecordatorioDebug", "Titulo: " + r.getTitulo() + ", Fecha: " + r.getFecha() + ", Hora: " + r.getHora());
 
+                        if (r != null) listaRecordatorios.add(r);
+
+                    }
+
+                    adapter.notifyDataSetChanged();
+
+                    // Mostrar mensaje si la lista está vacía
+                    TextView tvEmpty = getView().findViewById(id.txtVacio);
+                    if (listaRecordatorios.isEmpty()) {
+                        tvEmpty.setVisibility(View.VISIBLE);
+                    } else {
+                        tvEmpty.setVisibility(View.GONE);
+                    }
+                });
     }
+
+
+
+
+
 }
