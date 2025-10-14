@@ -86,6 +86,10 @@ class PerfilActivity : AppCompatActivity() {
 
         fotoUsuario()
 
+        binding.btnEditarPerfil.setOnClickListener {
+            startActivity(Intent(this, ActualizarActivity::class.java))
+        }
+
     }
 
     private fun fotoUsuario(){
