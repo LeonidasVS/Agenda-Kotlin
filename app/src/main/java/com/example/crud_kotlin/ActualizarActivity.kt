@@ -54,77 +54,66 @@ class ActualizarActivity : AppCompatActivity() {
 
     private fun validarYactualizar() {
         validarCampos()
-        val user = fireAuth.currentUser
-        if (user != null) {
-            val uid = user.uid
-            val ref = db.getReference("users").child(uid)
+        if (validarCampos()) {
+            val user = fireAuth.currentUser
+            if (user != null) {
+                val uid = user.uid
+                val ref = db.getReference("users").child(uid)
 
-            val userMap = mapOf(
-                "nombre" to nombre,
-                "apellido" to apellido,
-                "email" to correo,
-                "carrera" to carrera
-            )
+                val userMap = mapOf(
+                    "nombre" to nombre,
+                    "apellido" to apellido,
+                    "email" to correo,
+                    "carrera" to carrera
+                )
 
-            // 🔹 Actualiza primero el correo en FirebaseAuth
-            user.updateEmail(correo)
-                .addOnSuccessListener {
-                    // 🔹 Luego actualiza los datos en Realtime Database
-                    ref.updateChildren(userMap)
-                        .addOnSuccessListener {
-                            Toast.makeText(this, "Datos actualizados correctamente", Toast.LENGTH_SHORT).show()
-                            val intent = Intent(this, DashboardActivity::class.java)
-                            // 🔹 Esto limpia el historial de Activities anteriores
-                            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                            startActivity(intent)
-                            finish()
-                        }
-                        .addOnFailureListener {
-                            Toast.makeText(this, "Error al actualizar en la base de datos", Toast.LENGTH_SHORT).show()
-                        }
-                }
-                .addOnFailureListener {
-                    Toast.makeText(this, "Error al actualizar el correo en FirebaseAuth", Toast.LENGTH_SHORT).show()
-                }
+                user.updateEmail(correo)
+                    .addOnSuccessListener {
+                        ref.updateChildren(userMap)
+                            .addOnSuccessListener {
+                                Toast.makeText(this, "Datos actualizados correctamente", Toast.LENGTH_SHORT).show()
+                                val intent = Intent(this, DashboardActivity::class.java)
+                                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                                startActivity(intent)
+                                finish()
+                            }
+                            .addOnFailureListener {
+                                Toast.makeText(this, "Error al actualizar en la base de datos", Toast.LENGTH_SHORT).show()
+                            }
+                    }
+                    .addOnFailureListener {
+                        Toast.makeText(this, "Error al actualizar el correo en FirebaseAuth", Toast.LENGTH_SHORT).show()
+                    }
+            }
         }
     }
 
-    private fun validarCampos() {
+    private fun validarCampos(): Boolean {
         nombre = binding.inputNombre.text.toString().trim()
         apellido = binding.inputApellido.text.toString().trim()
         correo = binding.inputMail.text.toString().trim()
         carrera = binding.spinnerCarrera.text.toString().trim()
 
-        when {
-            nombre.isEmpty() -> {
-                binding.inputNombre.error = "Ingrese un Nombre"
-                binding.inputNombre.requestFocus()
-                return
-            }
+        var valido = true
 
-            apellido.isEmpty() -> {
-                binding.inputApellido.error = "Ingrese un Apellido"
-                binding.inputApellido.requestFocus()
-                return
-            }
-
-            correo.isEmpty() -> {
-                binding.inputMail.error = "Ingrese un Correo Electrónico"
-                binding.inputMail.requestFocus()
-                return
-            }
-
-            !Patterns.EMAIL_ADDRESS.matcher(correo).matches() -> {
-                binding.inputMail.error = "Correo inválido"
-                binding.inputMail.requestFocus()
-                return
-            }
-
-            carrera == "-- Seleccione una carrera --" || carrera.isEmpty() -> {
-                Toast.makeText(this, "Selecciona una carrera", Toast.LENGTH_SHORT).show()
-                return
-            }
+        if (nombre.isEmpty()) {
+            binding.inputNombre.error = "Ingrese su nombre"
+            valido = false
         }
+        if (apellido.isEmpty()) {
+            binding.inputApellido.error = "Ingrese su apellido"
+            valido = false
+        }
+        if (correo.isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(correo).matches()) {
+            binding.inputMail.error = "Correo no válido"
+            valido = false
+        }
+        if (carrera.isEmpty() || carrera == "-- Seleccione una carrera --") {
+            binding.spinnerCarrera.error = "Seleccione una carrera"
+            valido = false
+        }
+
+        return valido
     }
 
     private fun cargarUsuario() {
