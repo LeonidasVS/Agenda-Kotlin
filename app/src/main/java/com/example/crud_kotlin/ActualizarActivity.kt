@@ -63,7 +63,6 @@ class ActualizarActivity : AppCompatActivity() {
                 val userMap = mapOf(
                     "nombre" to nombre,
                     "apellido" to apellido,
-                    "email" to correo,
                     "carrera" to carrera
                 )
 
@@ -91,7 +90,6 @@ class ActualizarActivity : AppCompatActivity() {
     private fun validarCampos(): Boolean {
         nombre = binding.inputNombre.text.toString().trim()
         apellido = binding.inputApellido.text.toString().trim()
-        correo = binding.inputMail.text.toString().trim()
         carrera = binding.spinnerCarrera.text.toString().trim()
 
         var valido = true
@@ -102,10 +100,6 @@ class ActualizarActivity : AppCompatActivity() {
         }
         if (apellido.isEmpty()) {
             binding.inputApellido.error = "Ingrese su apellido"
-            valido = false
-        }
-        if (correo.isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(correo).matches()) {
-            binding.inputMail.error = "Correo no válido"
             valido = false
         }
         if (carrera.isEmpty() || carrera == "-- Seleccione una carrera --") {
@@ -133,6 +127,7 @@ class ActualizarActivity : AppCompatActivity() {
                         binding.inputNombre.setText(nombre)
                         binding.inputApellido.setText(apellido)
                         binding.inputMail.setText(correo)
+                        binding.inputMail.isEnabled = false
                         binding.spinnerCarrera.setText(carrera, false)
                     } else {
                         Toast.makeText(this, "No se encontraron datos del usuario", Toast.LENGTH_SHORT).show()
