@@ -114,8 +114,8 @@ class PerfilActivity : AppCompatActivity() {
         if (usuario != null) {
             // Crear TextInputLayout y TextInputEditText
             val passwordLayout = TextInputLayout(this).apply {
-                hint = "Contraseña"
-                isPasswordVisibilityToggleEnabled = true // Icono para mostrar/ocultar
+                hint = "Contraseña..."
+                isPasswordVisibilityToggleEnabled = true
                 setPadding(16, 16, 16, 16)
                 boxBackgroundMode = TextInputLayout.BOX_BACKGROUND_OUTLINE
             }
@@ -129,8 +129,8 @@ class PerfilActivity : AppCompatActivity() {
 
             // Construir el AlertDialog
             val dialogo=AlertDialog.Builder(this)
-                .setTitle("¿Eliminar tu cuenta?")
-                .setMessage("Ingresa tu contraseña para confirmar")
+                .setTitle("¿Deseas eliminar tu cuenta?")
+                .setMessage("¡Ingresa tu contraseña para confirmar!")
                 .setView(passwordLayout)
                 .setIcon(R.drawable.ic_advertencia)
                 .setPositiveButton("Si, continuar") { _, _ ->
@@ -182,9 +182,6 @@ class PerfilActivity : AppCompatActivity() {
 
         }
     }
-
-
-
 
     private fun fotoUsuario(){
         val drawable = android.graphics.drawable.GradientDrawable()
