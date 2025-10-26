@@ -46,6 +46,11 @@ class LoginActivity : AppCompatActivity() {
         binding.btnLogin.setOnClickListener {
             validarUsuario()
         }
+
+        binding.btnLoginGoogle.setOnClickListener {
+            //Toast.makeText(this, "Iniciar con google", Toast.LENGTH_SHORT).show()
+
+        }
     }
 
     private var password=""
@@ -80,13 +85,10 @@ class LoginActivity : AppCompatActivity() {
                     baseReferencia.child(uid).get()
                         .addOnSuccessListener { snapshot ->
                             if (snapshot.exists()) {
-                                // ✅ Usuario válido → Ir al Dashboard
-                                Toast.makeText(this, "Bienvenido", Toast.LENGTH_SHORT).show()
-                                val intent = Intent(this, DashboardActivity::class.java)
-                                // 🔹 Esto limpia el historial de Activities anteriores
-                                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                                startActivity(intent)
-                                finish()
+
+                                Toast.makeText(this, "¡Bienvenido!", Toast.LENGTH_SHORT).show()
+                                irAlDashboard()
+
                             } else {
                                 Toast.makeText(this, "No se encontraron datos del usuario", Toast.LENGTH_SHORT).show()
                             }
@@ -99,5 +101,12 @@ class LoginActivity : AppCompatActivity() {
                     Toast.makeText(this, "Correo o contraseña incorrectos", Toast.LENGTH_SHORT).show()
                 }
             }
+    }
+
+    private fun irAlDashboard() {
+        val intent = Intent(this, DashboardActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(intent)
+        finish()
     }
 }

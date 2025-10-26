@@ -57,6 +57,10 @@ dependencies {
 
     //Estilos
     implementation("com.google.android.material:material:1.10.0")
+
+    //Google
+    implementation("com.google.android.gms:play-services-auth:21.4.0")
+    implementation("com.google.android.libraries.identity.googleid:googleid:1.1.1")
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
     testImplementation(libs.junit)
