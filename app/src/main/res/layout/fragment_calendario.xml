@@ -8,20 +8,6 @@
     tools:context=".Fragmentos.FragmentCalendario">
 
 
-    <androidx.cardview.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:layout_margin="20dp"
-        android:layout_marginBottom="16dp"
-        app:cardCornerRadius="12dp"
-        app:cardElevation="2dp">
-        <!-- Calendario -->
-        <CalendarView
-            android:id="@+id/calendarView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-    </androidx.cardview.widget.CardView>
 
 
     <!-- Título -->
@@ -31,14 +17,29 @@
         android:layout_height="wrap_content"
         android:paddingStart="20dp"
         android:text="Proximos eventos"
-        android:textSize="18sp"
+        android:textSize="24dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
         android:textStyle="bold" />
+
+
+
 
     <!-- Contenedor principal -->
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1">
+
+        <TextView
+            android:id="@+id/txtVacio"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="No hay recordatorios"
+            android:textSize="18sp"
+            android:gravity="center"
+            android:visibility="gone"
+            android:textColor="@android:color/darker_gray"/>
 
         <!-- RecyclerView sin ScrollView -->
         <androidx.recyclerview.widget.RecyclerView
