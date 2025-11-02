@@ -14,6 +14,7 @@ import com.example.crud_kotlin.Fragmentos.FragmentCalendario
 import com.example.crud_kotlin.Fragmentos.FragmentContacto
 import com.example.crud_kotlin.Fragmentos.FragmentRecordatorio
 import com.example.crud_kotlin.Modelos.Registro
+import com.example.crud_kotlin.Objetos.Avatar
 import com.example.crud_kotlin.databinding.ActivityDashboardBinding
 import com.example.crud_kotlin.databinding.ActivityMainBinding
 import com.google.firebase.auth.FirebaseAuth
@@ -73,7 +74,7 @@ class DashboardActivity : AppCompatActivity() {
             startActivity(Intent(applicationContext, PerfilActivity::class.java))
         }
 
-        binding.tvBtnConfiguracion.setOnClickListener {
+        binding.btnPerfil.setOnClickListener {
             startActivity(Intent(applicationContext, PerfilActivity::class.java))
         }
 
@@ -88,45 +89,53 @@ class DashboardActivity : AppCompatActivity() {
 
 
     private fun circulName() {
+
         val user = FirebaseAuth.getInstance().currentUser
 
         if (user?.photoUrl != null) {
             user.photoUrl?.let { uri ->
-                Picasso.get().load(uri).into(binding.btnConfiguracion)
-                binding.tvBtnConfiguracion.visibility = View.GONE
+                // Guardar la imagen en el objeto Avatar
+                Avatar.imagenUri = uri
+
+                // Mostrar la imagen en el ImageView
+                Picasso.get()
+                    .load(uri)
+                    .into(binding.btnConfiguracion)
+
+                // Ocultar el botón de texto (avatar por letra)
+                binding.btnPerfil.visibility = View.GONE
             }
         } else {
-            val nombre = when {
-                !user?.displayName.isNullOrEmpty() -> user?.displayName?.first().toString().uppercase()
-                !user?.email.isNullOrEmpty() -> user?.email?.first().toString().uppercase()
-                else -> "U"
+            // Obtener la primera letra del email
+            val displayName = user?.email
+            Avatar.letra = displayName?.firstOrNull()?.toString()?.uppercase() ?: "?"
+
+            // Mostrar la letra en el TextView
+            binding.btnPerfil.text = Avatar.letra
+
+            // Generar color aleatorio solo si no existe
+            if (Avatar.color == null) {
+                val random = java.util.Random()
+                Avatar.color = android.graphics.Color.rgb(
+                    random.nextInt(256),
+                    random.nextInt(256),
+                    random.nextInt(256)
+                )
             }
 
-            binding.tvBtnConfiguracion.text = nombre
-            binding.tvBtnConfiguracion.setTextColor(Color.WHITE)
+            // Crear un drawable circular con el color del avatar
+            val drawable = android.graphics.drawable.GradientDrawable()
+            drawable.shape = android.graphics.drawable.GradientDrawable.OVAL
+            drawable.setColor(Avatar.color!!)
 
-            val r = Random.nextInt(50, 256)
-            val g = Random.nextInt(50, 256)
-            val b = Random.nextInt(50, 256)
-            val color = Color.rgb(r, g, b)
+            // Asignar el drawable como fondo del TextView
+            binding.btnPerfil.background = drawable
 
-            val shape = GradientDrawable()
-            shape.shape = GradientDrawable.OVAL
-            shape.setColor(color)
-            binding.tvBtnConfiguracion.background = shape
+            // Ocultar el ImageView del perfil
+            binding.btnConfiguracion.visibility = View.GONE
         }
+
     }
-
-
-
-
-
-
-
-
-
-
-
 
 
     private fun verFragmentoNotas(){

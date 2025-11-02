@@ -78,8 +78,9 @@
             android:backgroundTint="@color/azul"
             android:fontFamily="@font/poppins_medium"
             android:text="Verificar"
+            android:textStyle="bold"
             android:textColor="@color/blanco"
-            android:textSize="12sp"
+            android:textSize="14sp"
             app:cornerRadius="8dp" />
 
     <com.google.android.material.button.MaterialButton
@@ -87,12 +88,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="40dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="10dp"
         android:layout_marginRight="40dp"
         android:backgroundTint="@color/azul"
         android:fontFamily="@font/poppins_medium"
         android:text="Iniciar con Google"
         android:textColor="@color/blanco"
+        app:icon="@drawable/ic_google"
+        app:iconGravity="textEnd"
         android:textStyle="bold"
         android:textSize="14dp"
         app:cornerRadius="8dp" />

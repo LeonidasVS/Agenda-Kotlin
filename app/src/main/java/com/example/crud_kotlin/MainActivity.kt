@@ -37,14 +37,14 @@ class MainActivity : AppCompatActivity() {
             if (firebaseAuth.currentUser != null){
                 irDashboard()
             }
-            else{
-                startActivity(Intent(applicationContext,LoginActivity::class.java))
-                finish()
-            }
         }
 
         binding.btnRegistrar.setOnClickListener {
             startActivity(Intent(applicationContext,RegistrarActivity::class.java))
+        }
+
+        binding.btnLogin.setOnClickListener {
+            startActivity(Intent(this, LoginActivity::class.java))
             finish()
         }
 

@@ -27,17 +27,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
-
-
-
-
-
-
-
         <com.google.android.material.imageview.ShapeableImageView
 
-            android:layout_width="32dp"
-            android:layout_height="32dp"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
             android:layout_marginTop="2dp"
             android:layout_alignParentEnd="true"
             android:layout_marginEnd="20dp"
@@ -46,25 +39,13 @@
             app:shapeAppearanceOverlay="@style/CircularImage"
             android:clickable="true"
             android:id="@+id/btn_configuracion"
-
             app:strokeWidth="2dp" />
-
-<!--        <ImageView-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginTop="2dp"-->
-<!--            android:layout_alignParentEnd="true"-->
-<!--            android:layout_marginEnd="20dp"-->
-<!--            android:src="@drawable/ic_configuracion"-->
-<!--            style="@style/CircularImage"-->
-<!--            android:clickable="true"-->
-<!--            android:id="@+id/btn_configuracion"/>-->
 
 
         <TextView
-            android:id="@+id/tv_btn_configuracion"
-            android:layout_width="42dp"
-            android:layout_height="42dp"
+            android:id="@+id/btnPerfil"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
             android:layout_alignParentEnd="true"
             android:layout_marginEnd="17dp"
             android:background="@drawable/circulo_blanco"
